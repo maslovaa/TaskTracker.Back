@@ -5,7 +5,7 @@ namespace Domain.Entities;
 /// <summary>
 /// Модель пользователя.
 /// </summary>
-public class User : IEntity<int>
+public class User : NamedEntity<int>
 {
     /// <summary>
     /// Идентификатор.

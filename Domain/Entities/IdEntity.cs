@@ -1,10 +1,12 @@
-namespace Domain.Abstractions;
+using Domain.Abstractions;
+
+namespace Domain.Entities;
 
 /// <summary>
-/// Интерфейс сущности с идентификатором.
+/// Базовая сущность с идентификатором.
 /// </summary>
 /// <typeparam name="T">Тип идентификатора.</typeparam>
-public interface IEntity<T>
+public abstract class IdEntity<T> : IEntity<T>
 {
     /// <summary>
     /// Идентификатор.
