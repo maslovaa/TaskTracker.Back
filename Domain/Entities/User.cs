@@ -8,14 +8,6 @@ namespace Domain.Entities;
 public class User : NamedEntity
 {
     /// <summary>
-    /// Идентификатор.
-    /// </summary>
-    public int Id { get; set; }
-    /// <summary>
-    /// Имя.
-    /// </summary>
-    public string Name { get; set; }
-    /// <summary>
     /// Фамилия.
     /// </summary>
     public string Surname { get; set; }
