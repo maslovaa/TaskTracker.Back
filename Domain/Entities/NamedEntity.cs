@@ -4,7 +4,7 @@ namespace Domain.Entities;
 /// Базовая сущность с идентификатором и именем.
 /// </summary>
 /// <typeparam name="T">Тип идентификатора.</typeparam>
-public abstract class NamedEntity<T> : IdEntity<T>
+public abstract class NamedEntity : IdEntity
 {
     /// <summary>
     /// Имя сущности.

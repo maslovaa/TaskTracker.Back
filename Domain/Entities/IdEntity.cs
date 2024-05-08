@@ -6,10 +6,10 @@ namespace Domain.Entities;
 /// Базовая сущность с идентификатором.
 /// </summary>
 /// <typeparam name="T">Тип идентификатора.</typeparam>
-public abstract class IdEntity<T> : IEntity<T>
+public abstract class IdEntity : IEntity<Guid>
 {
     /// <summary>
     /// Идентификатор.
     /// </summary>
-    public T Id { get; set; }
+    public Guid Id { get; set; }
 }
