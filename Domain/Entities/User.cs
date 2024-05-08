@@ -5,16 +5,8 @@ namespace Domain.Entities;
 /// <summary>
 /// Модель пользователя.
 /// </summary>
-public class User : IEntity<int>
+public class User : NamedEntity
 {
-    /// <summary>
-    /// Идентификатор.
-    /// </summary>
-    public int Id { get; set; }
-    /// <summary>
-    /// Имя.
-    /// </summary>
-    public string Name { get; set; }
     /// <summary>
     /// Фамилия.
     /// </summary>
