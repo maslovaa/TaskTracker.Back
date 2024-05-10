@@ -23,7 +23,7 @@ public class TestController : ControllerBase
             Surname = "SomeSurname",
             Patronymic = "SomePatronymic",
             Email = "mock@domain.ru",
-            Id = 1,
+            Id = Guid.NewGuid(),
             IsActive = true,
             UserName = "SomeUserName"
         };
