@@ -18,7 +18,7 @@ namespace DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<ProjectEntity>().ToTable("Projects");
             modelBuilder.Entity<ProjectEntity>()
                 .HasKey(e => e.Id);
         }
