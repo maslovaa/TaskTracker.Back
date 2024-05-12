@@ -9,6 +9,7 @@ namespace DataAccess.Extensions
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddTransient<IProjectsRepository, ProjectsRepository>();
+            services.AddTransient<ITasksRepository, TasksRepository>();
         }
     }
 }
