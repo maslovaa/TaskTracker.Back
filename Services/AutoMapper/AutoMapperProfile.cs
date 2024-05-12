@@ -10,6 +10,9 @@ namespace Services.AutoMapper
         {
             CreateMap<ProjectEntity, ProjectDto>();
             CreateMap<ProjectDto, ProjectEntity>();
+
+            CreateMap<DeskEntity, DeskDto>();
+            CreateMap<DeskDto, DeskEntity>();
         }
     }
 }
