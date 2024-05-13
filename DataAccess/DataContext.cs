@@ -7,6 +7,7 @@ namespace DataAccess
     {
         public DbSet<ProjectEntity> ProjectEntities { get; set; }
         public DbSet<TaskEntity> TaskEntities { get; set; }
+        public DbSet<DeskEntity> DeskEntities { get; set; }
         public DbSet<User> Users { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
@@ -24,6 +25,8 @@ namespace DataAccess
 
             modelBuilder.Entity<TaskEntity>().ToTable("Tasks");
             modelBuilder.Entity<TaskEntity>()
+            modelBuilder.Entity<DeskEntity>().ToTable("Desks");
+            modelBuilder.Entity<DeskEntity>()
                 .HasKey(e => e.Id);
 
             base.OnModelCreating(modelBuilder);
