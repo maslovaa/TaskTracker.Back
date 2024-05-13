@@ -25,6 +25,8 @@ namespace DataAccess
 
             modelBuilder.Entity<TaskEntity>().ToTable("Tasks");
             modelBuilder.Entity<TaskEntity>()
+                .HasKey(e => e.Id);
+
             modelBuilder.Entity<DeskEntity>().ToTable("Desks");
             modelBuilder.Entity<DeskEntity>()
                 .HasKey(e => e.Id);
