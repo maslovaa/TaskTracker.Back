@@ -14,6 +14,8 @@ namespace Services.AutoMapper
             CreateMap<TaskDto, TaskEntity>();
             CreateMap<DeskEntity, DeskDto>();
             CreateMap<DeskDto, DeskEntity>();
+            CreateMap<UserDto, UserEntity>().ReverseMap();
+            CreateMap<CreatingUserDto, UserEntity>().ReverseMap();
         }
     }
 }

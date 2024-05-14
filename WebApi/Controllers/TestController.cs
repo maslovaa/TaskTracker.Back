@@ -15,9 +15,9 @@ public class TestController : ControllerBase
     }
 
     [HttpGet("GetUser")]
-    public User GetUserModel()
+    public UserEntity GetUserModel()
     {
-        return new User()
+        return new UserEntity()
         {
             Name = "SomeName",
             Surname = "SomeSurname",
