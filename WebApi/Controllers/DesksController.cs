@@ -1,5 +1,4 @@
-﻿using DataAccess.Repositories;
-using Domain.Abstractions;
+﻿using Domain.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto;
 
@@ -7,9 +6,8 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DesksController(IDesksRepository desksRepository) : ControllerBase
+    public class DesksController(IDesksRepository _desksRepository) : ControllerBase
     {
-        private readonly IDesksRepository _desksRepository = desksRepository;
         // GET: api/Desks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DeskDto>>> GetAsync()

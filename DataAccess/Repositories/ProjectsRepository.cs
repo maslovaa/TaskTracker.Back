@@ -7,11 +7,9 @@ using System.Linq.Expressions;
 
 namespace DataAccess.Repositories
 {
-    public class ProjectsRepository(DataContext dataContext, IMapper mapper) : IProjectsRepository
+    public class ProjectsRepository(DataContext _context, IMapper _mapper) : IProjectsRepository
     {
-        private readonly DataContext _context = dataContext;
-        private readonly IMapper _mapper = mapper;
-
+        /// <inheritdoc/>
         public async Task<Guid> AddProjectAsync(ProjectDto projectDto)
         {
             try
@@ -27,6 +25,7 @@ namespace DataAccess.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> DeleteProjectAsync(Guid projectId)
         {
             try
@@ -42,6 +41,7 @@ namespace DataAccess.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<ProjectDto> FindProjectByIdAsync(Guid projectId)
         {
             try
@@ -56,6 +56,7 @@ namespace DataAccess.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<ProjectDto>> GetProjectsByPredicateAsync(Expression<Func<ProjectEntity, bool>> predicate)
         {
             try
@@ -70,6 +71,7 @@ namespace DataAccess.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> UpdateProjectAsync(ProjectDto projectDto)
         {
             try

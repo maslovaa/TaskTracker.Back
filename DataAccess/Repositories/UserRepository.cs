@@ -7,17 +7,10 @@ namespace DataAccess.Repositories;
 /// <summary>
 /// Хранилище пользователей.
 /// </summary>
-public class UserRepository : IUserRepository
+public class UserRepository(DataContext _context) : IUserRepository
 {
-    private readonly DbContext Context;
-    private readonly DbSet<UserEntity> _usersSet;
+    private readonly DbSet<UserEntity> _usersSet = _context.Set<UserEntity>();
 
-    public UserRepository(DataContext context)
-    {
-        Context = context;
-        _usersSet = context.Set<UserEntity>();
-    }
-    
     /// <summary>
     /// Получение запроса на всех пользователей.
     /// </summary>
@@ -25,6 +18,7 @@ public class UserRepository : IUserRepository
     /// <returns>Объект запроса.</returns>
     public IQueryable<UserEntity> GetAll(bool NoTracking = false)
     {
+        _context.ProjectEntities.Add(new ProjectEntity() { Name = "sdff" });
         return NoTracking ? _usersSet.AsNoTracking() : _usersSet;
     }
 
@@ -90,7 +84,7 @@ public class UserRepository : IUserRepository
             return false;
         }
 
-        Context.Entry(user).State = EntityState.Deleted;
+        _usersSet.Entry(user).State = EntityState.Deleted;
         return true;
     }
 
@@ -100,7 +94,7 @@ public class UserRepository : IUserRepository
     /// <param name="user">Пользователь.</param>
     public void Update(UserEntity user)
     {
-        Context.Entry(user).State = EntityState.Modified;
+        _usersSet.Entry(user).State = EntityState.Modified;
     }
 
     /// <summary>
@@ -128,11 +122,11 @@ public class UserRepository : IUserRepository
     /// </summary>
     public void SaveChanges()
     {
-        Context.SaveChanges();
+        _context.SaveChanges();
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        await Context.SaveChangesAsync(cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

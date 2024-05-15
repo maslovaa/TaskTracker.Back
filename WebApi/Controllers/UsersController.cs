@@ -1,6 +1,4 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Models.Dto;
 using Services.Abstractions;
 
@@ -8,19 +6,8 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UsersController : ControllerBase
+public class UsersController(IUserEntityService _userService) : ControllerBase
 {
-    private readonly IUserEntityService _userService;
-    private readonly IMapper _mapper;
-    private readonly ILogger<UsersController> _logger;
-
-    public UsersController(IUserEntityService userService, IMapper mapper, ILogger<UsersController> logger)
-    {
-        _userService = userService;
-        _mapper = mapper;
-        _logger = logger;
-    }
-
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(Guid id)
     {
