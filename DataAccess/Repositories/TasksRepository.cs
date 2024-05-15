@@ -3,20 +3,12 @@ using Domain.Abstractions;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Models.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class TasksRepository(DataContext dataContext, IMapper mapper) : ITasksRepository
+    public class TasksRepository(DataContext _context, IMapper _mapper) : ITasksRepository
     {
-        private readonly DataContext _context = dataContext;
-        private readonly IMapper _mapper = mapper;
-
         public async Task<Guid> AddTaskAsync(TaskDto taskDto)
         {
             try

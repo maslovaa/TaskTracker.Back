@@ -3,14 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
-    public class DataContext : DbContext
+    public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
     {
         public DbSet<ProjectEntity> ProjectEntities { get; set; }
         public DbSet<TaskEntity> TaskEntities { get; set; }
         public DbSet<DeskEntity> DeskEntities { get; set; }
         public DbSet<UserEntity> Users { get; set; }
-
-        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

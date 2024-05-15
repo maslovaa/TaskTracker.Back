@@ -7,11 +7,8 @@ using System.Linq.Expressions;
 
 namespace DataAccess.Repositories
 {
-    public class ProjectsRepository(DataContext dataContext, IMapper mapper) : IProjectsRepository
+    public class ProjectsRepository(DataContext _context, IMapper _mapper) : IProjectsRepository
     {
-        private readonly DataContext _context = dataContext;
-        private readonly IMapper _mapper = mapper;
-
         /// <inheritdoc/>
         public async Task<Guid> AddProjectAsync(ProjectDto projectDto)
         {
@@ -28,6 +25,7 @@ namespace DataAccess.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> DeleteProjectAsync(Guid projectId)
         {
             try
@@ -73,6 +71,7 @@ namespace DataAccess.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<bool> UpdateProjectAsync(ProjectDto projectDto)
         {
             try

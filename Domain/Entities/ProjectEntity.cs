@@ -20,7 +20,7 @@
         /// <summary>
         /// Статус проекта 
         /// </summary>
-        public string Status { get; set; }         //TODO ENUM
+        public string Status { get; set; } //TODO ENUM
 
         /// <summary>
         /// Владелец проекта

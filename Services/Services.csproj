@@ -11,12 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Models\Models.csproj" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
 
 </Project>
