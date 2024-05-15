@@ -22,6 +22,8 @@ namespace DataAccess
             modelBuilder.Entity<ProjectEntity>().ToTable("Projects");
             modelBuilder.Entity<ProjectEntity>()
                 .HasKey(e => e.Id);
+            modelBuilder.Entity<ProjectEntity>().HasMany(x => x.Desks).WithOne(x => x.Project);
+            modelBuilder.Entity<ProjectEntity>().HasOne(x => x.Owner);
 
             modelBuilder.Entity<TaskEntity>().ToTable("Tasks");
             modelBuilder.Entity<TaskEntity>()

@@ -18,18 +18,18 @@
         public DateTime? EndDate { get; set; }
 
         /// <summary>
-        /// Статус проекта
+        /// Статус проекта 
         /// </summary>
-        public string Status { get; set; }
+        public string Status { get; set; }         //TODO ENUM
 
         /// <summary>
         /// Владелец проекта
         /// </summary>
-        //public UserEntity Owner { get; set; }
+        public UserEntity Owner { get; set; }
 
         /// <summary>
         /// Доски проекта
         /// </summary>
-        //public List<DeskEntity> Desks { get; set; }
+        public List<DeskEntity> Desks { get; set; }
     }
 }

@@ -6,9 +6,8 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProjectsController(IProjectsRepository projectsRepository) : ControllerBase
+    public class ProjectsController(IProjectsRepository _projectsRepository) : ControllerBase
     {
-        private readonly IProjectsRepository _projectsRepository = projectsRepository;
         // GET: api/Projects
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAsync()

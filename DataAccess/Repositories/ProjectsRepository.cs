@@ -12,6 +12,7 @@ namespace DataAccess.Repositories
         private readonly DataContext _context = dataContext;
         private readonly IMapper _mapper = mapper;
 
+        /// <inheritdoc/>
         public async Task<Guid> AddProjectAsync(ProjectDto projectDto)
         {
             try
@@ -42,6 +43,7 @@ namespace DataAccess.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<ProjectDto> FindProjectByIdAsync(Guid projectId)
         {
             try
@@ -56,6 +58,7 @@ namespace DataAccess.Repositories
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<ProjectDto>> GetProjectsByPredicateAsync(Expression<Func<ProjectEntity, bool>> predicate)
         {
             try

@@ -1,5 +1,4 @@
-﻿using DataAccess.Repositories;
-using Domain.Abstractions;
+﻿using Domain.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto;
 
@@ -7,9 +6,8 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TasksController(ITasksRepository tasksRepository) : ControllerBase
+    public class TasksController(ITasksRepository _tasksRepository) : ControllerBase
     {
-        private readonly ITasksRepository _tasksRepository = tasksRepository;
         // GET: api/Tasks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskDto>>> GetAsync()
