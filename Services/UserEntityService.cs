@@ -26,7 +26,7 @@ public class UserEntityService : IUserEntityService
     /// <returns>Дто пользователя.</returns>
     public async Task<UserDto> GetByIdAsync(Guid id)
     {
-        var user = await _userRepository.GetAsync(id, default);
+        var user = await _userRepository.GetByIdAsync(id, CancellationToken.None);
         return _mapper.Map<UserEntity, UserDto>(user);
     }
 
@@ -38,9 +38,7 @@ public class UserEntityService : IUserEntityService
     public async Task<Guid> CreateAsync(CreatingUserDto creatingUserDto)
     {
         var user = _mapper.Map<CreatingUserDto, UserEntity>(creatingUserDto);
-        var createdUser = await _userRepository.AddAsync(user);
-        await _userRepository.SaveChangesAsync(default);
-        return createdUser.Id;
+        return await _userRepository.AddAsync(user);
     }
 
     /// <summary>
@@ -51,7 +49,7 @@ public class UserEntityService : IUserEntityService
     /// <exception cref="ArgumentNullException">Исключение если изменяемый пользователь не существует.</exception>
     public async Task UpdateAsync(Guid id, UserDto updatingUserDto)
     {
-        var user = await _userRepository.GetAsync(id, default);
+        var user = await _userRepository.GetByIdAsync(id, CancellationToken.None);
         if (user is null)
         {
             throw new ArgumentNullException($"Пользователя с идентификатором {id} не найден!");
@@ -59,9 +57,8 @@ public class UserEntityService : IUserEntityService
 
         user.UserName = updatingUserDto.UserName;
         user.Email = updatingUserDto.Email;
-        _userRepository.Update(user);
-        await _userRepository.SaveChangesAsync(default);
-       
+        await _userRepository.Update(user);
+      
     }
 
     /// <summary>
@@ -70,8 +67,6 @@ public class UserEntityService : IUserEntityService
     /// <param name="id">Идентификатор пользователя.</param>
     public async Task DeleteAsync(Guid id)
     {
-        var user = await _userRepository.GetAsync(id, default);
-        user.IsActive = false;
-        await _userRepository.SaveChangesAsync(default);
+        var user = await _userRepository.Delete(id, CancellationToken.None);
     }
 }
