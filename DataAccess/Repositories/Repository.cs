@@ -27,7 +27,7 @@ public abstract class Repository<T, TId> : IRepository<T, TId>
     }
 
     /// <inheritdoc/>
-    public virtual async Task<ICollection<T>> GetAllAsync(CancellationToken cancellationToken, bool noTracking = false)
+    public virtual async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken, bool noTracking = false)
     {
         return await GetAll().ToListAsync(cancellationToken);
     }
@@ -75,7 +75,7 @@ public abstract class Repository<T, TId> : IRepository<T, TId>
     }
 
     /// <inheritdoc/>
-    public virtual async Task<ICollection<T>> GetByPredicate(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
+    public virtual async Task<IEnumerable<T>> GetByPredicate(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
     {
         return await _context.Set<T>().Where(predicate).ToListAsync(cancellationToken);
     }

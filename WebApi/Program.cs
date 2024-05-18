@@ -2,6 +2,7 @@ using DataAccess;
 using DataAccess.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Services.AutoMapper;
+using Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddRepositories();
+builder.Services.AddServices();
 
 var app = builder.Build();
 

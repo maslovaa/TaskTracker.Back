@@ -24,7 +24,7 @@ public interface IRepository<T, TId>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <param name="noTracking">Флаг отслеживания.</param>
     /// <returns>Коллекция элементов.</returns>
-    Task<ICollection<T>> GetAllAsync(CancellationToken cancellationToken, bool noTracking = false);
+    Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken, bool noTracking = false);
 
     /// <summary>
     /// Добавление сущностей в хранилище.
@@ -61,7 +61,7 @@ public interface IRepository<T, TId>
     /// <param name="predicate">Предикат.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Коллекция элементов.</returns>
-    Task<ICollection<T>> GetByPredicate(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken);
+    Task<IEnumerable<T>> GetByPredicate(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken);
 
     /// <summary>
     /// Обновление сущности.

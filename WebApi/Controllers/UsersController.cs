@@ -11,7 +11,7 @@ public class UsersController(IUserEntityService _userService) : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(Guid id)
     {
-        return Ok(await _userService.GetByIdAsync(id));
+        return Ok(await _userService.GetByIdAsync(id, CancellationToken.None));
     }
 
     [HttpPost]
@@ -23,14 +23,14 @@ public class UsersController(IUserEntityService _userService) : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> EditAsync(Guid id, UserDto updatingUserDto)
     {
-        await _userService.UpdateAsync(id, updatingUserDto);
+        await _userService.UpdateAsync(id, updatingUserDto, CancellationToken.None);
         return Ok();
     }
 
     [HttpDelete]
     public async Task<IActionResult> Delete(Guid guid)
     {
-        await _userService.DeleteAsync(guid);
+        await _userService.DeleteAsync(guid, CancellationToken.None);
         return Ok();
     }
 }

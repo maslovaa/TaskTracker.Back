@@ -11,8 +11,9 @@ public interface IUserEntityService
     /// Получить пользователя.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>ДТО Пользователя.</returns>
-    Task<UserDto> GetByIdAsync(Guid id);
+    Task<UserDto> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     /// <summary>
     /// Создание пользователя.
     /// </summary>
@@ -24,12 +25,14 @@ public interface IUserEntityService
     /// </summary>
     /// <param name="id">Идентификатор обновляемого пользователя.</param>
     /// <param name="updatingUserDto">ДТО обновления пользователя.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns></returns>
-    Task UpdateAsync(Guid id, UserDto updatingUserDto);
+    Task UpdateAsync(Guid id, UserDto updatingUserDto, CancellationToken cancellationToken);
     /// <summary>
     /// Удаление пользователя.
     /// </summary>
     /// <param name="id">Идентификатор пользователя.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns></returns>
-    Task DeleteAsync(Guid id);
+    Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 }
