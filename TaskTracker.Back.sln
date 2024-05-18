@@ -7,11 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{F82E1B30-BAB5-4938-BE4C-0CD0B53781A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{7E0945A3-6557-46C4-9D3C-CC2838FAD279}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{7E0945A3-6557-46C4-9D3C-CC2838FAD279}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{07CA4CE5-6B2D-4F8C-A853-DE9B4F187410}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{07CA4CE5-6B2D-4F8C-A853-DE9B4F187410}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{17705A65-5BFA-459E-A8CC-064D2B66D7DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{17705A65-5BFA-459E-A8CC-064D2B66D7DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{68DDD03C-0795-4DA7-9225-E38F3D12B340}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{17705A65-5BFA-459E-A8CC-064D2B66D7DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17705A65-5BFA-459E-A8CC-064D2B66D7DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17705A65-5BFA-459E-A8CC-064D2B66D7DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68DDD03C-0795-4DA7-9225-E38F3D12B340}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68DDD03C-0795-4DA7-9225-E38F3D12B340}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68DDD03C-0795-4DA7-9225-E38F3D12B340}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68DDD03C-0795-4DA7-9225-E38F3D12B340}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
