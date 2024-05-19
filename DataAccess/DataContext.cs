@@ -9,6 +9,7 @@ namespace DataAccess
         public DbSet<TaskEntity> TaskEntities { get; set; }
         public DbSet<DeskEntity> DeskEntities { get; set; }
         public DbSet<UserEntity> Users { get; set; }
+        public DbSet<RoleEntity> RolesEntities { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +34,10 @@ namespace DataAccess
 
             modelBuilder.Entity<UserEntity>().ToTable("Users");
             modelBuilder.Entity<UserEntity>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<RoleEntity>().ToTable("Roles");
+            modelBuilder.Entity<RoleEntity>()
                 .HasKey(e => e.Id);
 
             base.OnModelCreating(modelBuilder);

@@ -16,6 +16,8 @@ namespace Services.AutoMapper
             CreateMap<DeskDto, DeskEntity>();
             CreateMap<UserDto, UserEntity>().ReverseMap();
             CreateMap<CreatingUserDto, UserEntity>().ReverseMap();
+            CreateMap<RoleEntity, RoleDto>();
+            CreateMap<RoleDto, RoleEntity>();
         }
     }
 }
