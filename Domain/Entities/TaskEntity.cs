@@ -6,5 +6,7 @@
         public string Head { get; set; }
         public string Body { get; set; }
         public string Comment { get; set; }
+        public ProjectEntity Project { get; set; }
+        public DeskEntity Desk { get; set; }
     }
 }

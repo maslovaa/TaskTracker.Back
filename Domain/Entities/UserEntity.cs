@@ -27,4 +27,8 @@ public class UserEntity : NamedEntity
     /// Признак активности.
     /// </summary>
     public bool IsActive { get; set; }
+    /// <summary>
+    /// Проекты.
+    /// </summary>
+    public IEnumerable<ProjectEntity> Projects { get; set; }
 }

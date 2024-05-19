@@ -28,8 +28,8 @@
         public UserEntity Owner { get; set; }
 
         /// <summary>
-        /// Доски проекта
+        /// Задачи проекта
         /// </summary>
-        public List<DeskEntity> Desks { get; set; }
+        public IEnumerable<TaskEntity> TaskEntities { get; set; }
     }
 }
