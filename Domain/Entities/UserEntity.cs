@@ -31,4 +31,8 @@ public class UserEntity : NamedEntity
     /// Проекты.
     /// </summary>
     public IEnumerable<ProjectEntity> Projects { get; set; }
+    /// <summary>
+    /// Роль пользователя.
+    /// </summary>
+    public RoleEntity Role { get; set; }
 }

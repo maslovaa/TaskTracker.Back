@@ -23,13 +23,14 @@
         public string Status { get; set; } //TODO ENUM
 
         /// <summary>
-        /// Владелец проекта
+        /// Владелецы проекта
         /// </summary>
-        public UserEntity Owner { get; set; }
+        public IEnumerable<UserEntity> Users { get; set; }
 
         /// <summary>
         /// Задачи проекта
         /// </summary>
-        public IEnumerable<TaskEntity> TaskEntities { get; set; }
+        public IEnumerable<TaskEntity> Tasks { get; set; }
+        public IEnumerable<DeskEntity> Desks { get; set; }
     }
 }

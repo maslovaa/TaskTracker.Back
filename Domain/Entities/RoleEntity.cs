@@ -6,5 +6,6 @@
         /// Описание роли
         /// </summary>
         public string Description { get; set; }
+        public UserEntity User { get; set; }
     }
 }
