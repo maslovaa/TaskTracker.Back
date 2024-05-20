@@ -6,6 +6,9 @@
         /// Описание роли
         /// </summary>
         public string Description { get; set; }
-        public UserEntity User { get; set; }
+        /// <summary>
+        /// Пользователи роли
+        /// </summary>
+        public IEnumerable<UserEntity> Users { get; set; }
     }
 }

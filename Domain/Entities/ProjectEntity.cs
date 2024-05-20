@@ -28,9 +28,8 @@
         public IEnumerable<UserEntity> Users { get; set; }
 
         /// <summary>
-        /// Задачи проекта
+        /// Доски проекта
         /// </summary>
-        public IEnumerable<TaskEntity> Tasks { get; set; }
         public IEnumerable<DeskEntity> Desks { get; set; }
     }
 }

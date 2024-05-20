@@ -24,15 +24,11 @@ namespace DataAccess
             modelBuilder.Entity<ProjectEntity>()
                 .HasMany(x => x.Users);
             modelBuilder.Entity<ProjectEntity>()
-                .HasMany(x => x.Tasks);
-            modelBuilder.Entity<ProjectEntity>()
                 .HasMany(x => x.Desks);
 
             modelBuilder.Entity<TaskEntity>().ToTable("Tasks");
             modelBuilder.Entity<TaskEntity>()
                 .HasKey(e => e.Id);
-            modelBuilder.Entity<TaskEntity>()
-                .HasOne(x => x.Project);
             modelBuilder.Entity<TaskEntity>()
                 .HasOne(x => x.Desk);
 
@@ -50,18 +46,14 @@ namespace DataAccess
             modelBuilder.Entity<UserEntity>()
                 .HasMany(x => x.Projects);
             modelBuilder.Entity<UserEntity>()
-                .HasOne(x => x.Role)
-                .WithOne(x => x.User)
-                .HasForeignKey<RoleEntity>(x => x.Id);
+                .HasOne(x => x.Role);
 
 
             modelBuilder.Entity<RoleEntity>().ToTable("Roles");
             modelBuilder.Entity<RoleEntity>()
                 .HasKey(e => e.Id);
             modelBuilder.Entity<RoleEntity>()
-                .HasOne(x => x.User)
-                .WithOne(x => x.Role)
-                .HasForeignKey<UserEntity>(x => x.Id);
+                .HasMany(x => x.Users);
 
             base.OnModelCreating(modelBuilder);
         }
