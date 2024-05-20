@@ -30,6 +30,6 @@
         /// <summary>
         /// Доски проекта
         /// </summary>
-        public List<DeskEntity> Desks { get; set; }
+        public IEnumerable<DeskEntity> Desks { get; set; }
     }
 }
