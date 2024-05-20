@@ -35,4 +35,8 @@ public class UserEntity : NamedEntity
     /// Роль пользователя.
     /// </summary>
     public RoleEntity Role { get; set; }
+    /// <summary>
+    /// Задачи пользователя.
+    /// </summary>
+    public IEnumerable<TaskEntity> Tasks { get; set; }
 }

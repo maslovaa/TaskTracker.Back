@@ -22,7 +22,7 @@ namespace DataAccess
             modelBuilder.Entity<ProjectEntity>()
                 .HasKey(e => e.Id);
             modelBuilder.Entity<ProjectEntity>()
-                .HasMany(x => x.Users);
+                .HasOne(x => x.Owner);
             modelBuilder.Entity<ProjectEntity>()
                 .HasMany(x => x.Desks);
 
@@ -31,6 +31,8 @@ namespace DataAccess
                 .HasKey(e => e.Id);
             modelBuilder.Entity<TaskEntity>()
                 .HasOne(x => x.Desk);
+            modelBuilder.Entity<TaskEntity>()
+                .HasOne(x => x.Performer);
 
             modelBuilder.Entity<DeskEntity>().ToTable("Desks");
             modelBuilder.Entity<DeskEntity>()
@@ -47,7 +49,8 @@ namespace DataAccess
                 .HasMany(x => x.Projects);
             modelBuilder.Entity<UserEntity>()
                 .HasOne(x => x.Role);
-
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(x => x.Tasks);
 
             modelBuilder.Entity<RoleEntity>().ToTable("Roles");
             modelBuilder.Entity<RoleEntity>()
