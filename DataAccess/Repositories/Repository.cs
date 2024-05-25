@@ -27,9 +27,11 @@ public abstract class Repository<T, TId> : IRepository<T, TId>
     }
 
     /// <inheritdoc/>
-    public virtual async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken, bool noTracking = false)
+    public virtual async Task<IQueryable<T>> GetAllAsync(CancellationToken cancellationToken, bool noTracking = false)
     {
-        return await GetAll().ToListAsync(cancellationToken);
+        return noTracking 
+            ? await Task.FromResult(_context.Set<T>().AsNoTracking()) 
+            : _context.Set<T>().AsQueryable();
     }
     
     /// <inheritdoc/>>
