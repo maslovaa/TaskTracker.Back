@@ -23,9 +23,9 @@
         public string Status { get; set; } //TODO ENUM
 
         /// <summary>
-        /// Владелец проекта
+        /// Владельцы проекта
         /// </summary>
-        public UserEntity Owner { get; set; }
+        public IEnumerable<UserEntity> Owners { get; set; }
 
         /// <summary>
         /// Доски проекта

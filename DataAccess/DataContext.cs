@@ -22,7 +22,7 @@ namespace DataAccess
             modelBuilder.Entity<ProjectEntity>()
                 .HasKey(e => e.Id);
             modelBuilder.Entity<ProjectEntity>()
-                .HasOne(x => x.Owner);
+                .HasMany(x => x.Owners);
             modelBuilder.Entity<ProjectEntity>()
                 .HasMany(x => x.Desks);
 
