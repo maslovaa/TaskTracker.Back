@@ -28,6 +28,11 @@
         public UserEntity Owner { get; set; }
 
         /// <summary>
+        /// Пользователи проекта
+        /// </summary>
+        public IEnumerable<UserEntity> Users { get; set; }
+
+        /// <summary>
         /// Доски проекта
         /// </summary>
         public IEnumerable<DeskEntity> Desks { get; set; }
