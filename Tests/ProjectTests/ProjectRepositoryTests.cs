@@ -2,12 +2,20 @@
 {
     public class ProjectRepositoryTests
     {
-        private Mock<IRepository<ProjectEntity, Guid>> _repositoryMock;
+        private DbContextOptions<DataContext> _options;
 
         [SetUp]
         public void SetUp()
         {
-            _repositoryMock = new Mock<IRepository<ProjectEntity, Guid>>();
+            _options = new DbContextOptionsBuilder<DataContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            using (var context = new DataContext(_options))
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+            }
         }
 
         [Test]
@@ -16,24 +24,29 @@
             // Arrange
             var guid1 = Guid.NewGuid();
             var guid2 = Guid.NewGuid();
-            var entities = new List<ProjectEntity>
-        {
-            new() { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now },
-            new() { Id = guid2, Description = "Тестовый проект 2", Name = "Project2", Status = "Новый", StartDate = DateTime.Now }
-        }.AsQueryable();
-
-            _repositoryMock.Setup(repo => repo.GetAllAsync(It.IsAny<CancellationToken>(), false))
-                           .ReturnsAsync(entities);
-
-            // Act
-            var result = await _repositoryMock.Object.GetAllAsync(CancellationToken.None);
-
-            // Assert
-            Assert.Multiple(() =>
+            using (var context = new DataContext(_options))
             {
-                Assert.That(result.Count(), Is.EqualTo(2));
-                Assert.That(result.First().Id, Is.EqualTo(guid1));
-            });
+                context.ProjectEntities.AddRange(
+                    new ProjectEntity { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now },
+                    new ProjectEntity { Id = guid2, Description = "Тестовый проект 2", Name = "Project2", Status = "Новый", StartDate = DateTime.Now }
+                );
+                context.SaveChanges();
+            }
+
+            using (var context = new DataContext(_options))
+            {
+                var repository = new ProjectsRepository(context);
+
+                // Act
+                var result = await repository.GetAllAsync(CancellationToken.None);
+
+                // Assert
+                Assert.Multiple(() =>
+                {
+                    Assert.That(result.Count(), Is.EqualTo(2));
+                    Assert.That(result.First().Id, Is.EqualTo(guid1));
+                });
+            }
         }
 
         [Test]
@@ -42,39 +55,65 @@
             // Arrange
             var guid1 = Guid.NewGuid();
             var guid2 = Guid.NewGuid();
-            var entities = new List<ProjectEntity>
-        {
-            new() { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now },
-            new() { Id = guid2, Description = "Тестовый проект 2", Name = "Project2", Status = "Новый", StartDate = DateTime.Now }
-        }.AsQueryable();
-
-            _repositoryMock.Setup(repo => repo.GetAll(false))
-                           .Returns(entities);
-
-            // Act
-            var result = _repositoryMock.Object.GetAll();
-
-            // Assert
-            Assert.Multiple(() =>
+            using (var context = new DataContext(_options))
             {
-                Assert.That(result.Count(), Is.EqualTo(2));
-                Assert.That(result.First().Id, Is.EqualTo(guid1));
-            });
+                context.ProjectEntities.AddRange(
+                    new ProjectEntity { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now },
+                    new ProjectEntity { Id = guid2, Description = "Тестовый проект 2", Name = "Project2", Status = "Новый", StartDate = DateTime.Now }
+                );
+                context.SaveChanges();
+            }
+
+            using (var context = new DataContext(_options))
+            {
+                var repository = new ProjectsRepository(context);
+
+                // Act
+                var result = repository.GetAll();
+
+                // Assert
+                Assert.Multiple(() =>
+                {
+                    Assert.That(result.Count(), Is.EqualTo(2));
+                    Assert.That(result.First().Id, Is.EqualTo(guid1));
+                });
+            }
         }
+
 
         [Test]
         public async Task AddAsyncShouldReturnNewProjectEntityId()
         {
             // Arrange
             var guid1 = Guid.NewGuid();
-            var ProjectEntity = new ProjectEntity() { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now };
-            _repositoryMock.Setup(repo => repo.AddAsync(ProjectEntity)).ReturnsAsync(ProjectEntity.Id);
+            var projectEntity = new ProjectEntity()
+            {
+                Id = guid1,
+                Description = "Тестовый проект 1",
+                Name = "Project1",
+                Status = "Новый",
+                StartDate = DateTime.Now
+            };
 
-            // Act
-            var result = await _repositoryMock.Object.AddAsync(ProjectEntity);
+            using (var context = new DataContext(_options))
+            {
+                var repository = new ProjectsRepository(context);
 
-            // Assert
-            Assert.That(result, Is.EqualTo(guid1));
+                // Act
+                var result = await repository.AddAsync(projectEntity);
+
+                // Assert
+                Assert.That(result, Is.EqualTo(guid1));
+
+                // Дополнительно проверим, что сущность действительно добавлена в базу данных
+                var addedEntity = await context.ProjectEntities.FindAsync(guid1);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(addedEntity, Is.Not.Null);
+                    Assert.That(addedEntity?.Name, Is.EqualTo("Project1"));
+                    Assert.That(addedEntity?.Description, Is.EqualTo("Тестовый проект 1"));
+                });
+            }
         }
 
         [Test]
@@ -82,14 +121,34 @@
         {
             // Arrange
             var guid1 = Guid.NewGuid();
-            var ProjectEntity = new ProjectEntity() { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now };
-            _repositoryMock.Setup(repo => repo.Add(ProjectEntity)).Returns(ProjectEntity.Id);
+            var projectEntity = new ProjectEntity()
+            {
+                Id = guid1,
+                Description = "Тестовый проект 1",
+                Name = "Project1",
+                Status = "Новый",
+                StartDate = DateTime.Now
+            };
 
-            // Act
-            var result = _repositoryMock.Object.Add(ProjectEntity);
+            using (var context = new DataContext(_options))
+            {
+                var repository = new ProjectsRepository(context);
 
-            // Assert
-            Assert.That(result, Is.EqualTo(guid1));
+                // Act
+                var result = repository.Add(projectEntity);
+
+                // Assert
+                Assert.That(result, Is.EqualTo(guid1));
+
+                // Дополнительно проверим, что сущность действительно добавлена в базу данных
+                var addedEntity = context.ProjectEntities.Find(guid1);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(addedEntity, Is.Not.Null);
+                    Assert.That(addedEntity?.Name, Is.EqualTo("Project1"));
+                    Assert.That(addedEntity?.Description, Is.EqualTo("Тестовый проект 1"));
+                });
+            }
         }
 
         [Test]
@@ -97,16 +156,31 @@
         {
             // Arrange
             var guid1 = Guid.NewGuid();
-            var ProjectEntity = new ProjectEntity() { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now };
+            var guid2 = Guid.NewGuid();
+            using (var context = new DataContext(_options))
+            {
+                context.ProjectEntities.AddRange(
+                    new ProjectEntity { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now },
+                    new ProjectEntity { Id = guid2, Description = "Тестовый проект 2", Name = "Project2", Status = "Новый", StartDate = DateTime.Now }
+                );
+                context.SaveChanges();
+            }
 
-            _repositoryMock.Setup(repo => repo.GetByIdAsync(guid1, It.IsAny<CancellationToken>()))
-                           .ReturnsAsync(ProjectEntity);
+            using (var context = new DataContext(_options))
+            {
+                var repository = new ProjectsRepository(context);
 
-            // Act
-            var result = await _repositoryMock.Object.GetByIdAsync(guid1, CancellationToken.None);
+                // Act
+                var result = await repository.GetByIdAsync(guid1, CancellationToken.None);
 
-            // Assert
-            Assert.That(result.Id, Is.EqualTo(guid1));
+                // Assert
+                Assert.Multiple(() =>
+                {
+                    Assert.That(result, Is.Not.Null);
+                    Assert.That(result?.Name, Is.EqualTo("Project1"));
+                    Assert.That(result?.Description, Is.EqualTo("Тестовый проект 1"));
+                });
+            }
         }
 
         [Test]
@@ -114,57 +188,115 @@
         {
             // Arrange
             var guid1 = Guid.NewGuid();
-            var ProjectEntity = new ProjectEntity() { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now };
+            var guid2 = Guid.NewGuid();
+            using (var context = new DataContext(_options))
+            {
+                context.ProjectEntities.AddRange(
+                    new ProjectEntity { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now },
+                    new ProjectEntity { Id = guid2, Description = "Тестовый проект 2", Name = "Project2", Status = "Новый", StartDate = DateTime.Now }
+                );
+                context.SaveChanges();
+            }
 
-            _repositoryMock.Setup(repo => repo.GetById(guid1))
-                           .Returns(ProjectEntity);
+            using (var context = new DataContext(_options))
+            {
+                var repository = new ProjectsRepository(context);
 
-            // Act
-            var result = _repositoryMock.Object.GetById(guid1);
+                // Act
+                var result = repository.GetById(guid1);
 
-            // Assert
-            Assert.That(result.Id, Is.EqualTo(guid1));
+                // Assert
+                Assert.Multiple(() =>
+                {
+                    Assert.That(result, Is.Not.Null);
+                    Assert.That(result?.Name, Is.EqualTo("Project1"));
+                    Assert.That(result?.Description, Is.EqualTo("Тестовый проект 1"));
+                });
+            }
         }
 
         [Test]
-        public async Task UpdateShouldReturnTrueWhenIsSuccessful()
+        public async Task UpdateAsyncShouldReturnTrueAndModifyEntity()
         {
             // Arrange
             var guid1 = Guid.NewGuid();
-            var ProjectEntity = new ProjectEntity() { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now };
+            var projectEntity = new ProjectEntity()
+            {
+                Id = guid1,
+                Description = "Тестовый проект 1",
+                Name = "Project1",
+                Status = "Новый",
+                StartDate = DateTime.Now
+            };
 
-            _repositoryMock.Setup(repo => repo.Update(ProjectEntity)).ReturnsAsync(true);
+            using (var context = new DataContext(_options))
+            {
+                context.ProjectEntities.Add(projectEntity);
+                await context.SaveChangesAsync();
+            }
 
-            // Act
-            var result = await _repositoryMock.Object.Update(ProjectEntity);
+            using (var context = new DataContext(_options))
+            {
+                var repository = new ProjectsRepository(context);
 
-            // Assert
-            Assert.That(result, Is.True);
+                // Обновляем сущность
+                projectEntity.Description = "Обновленный тестовый проект";
+                projectEntity.Status = "В процессе";
+
+                // Act
+                var result = await repository.Update(projectEntity);
+
+                // Assert
+                Assert.That(result, Is.True);
+
+                // Дополнительно проверим, что сущность действительно была обновлена в базе данных
+                var updatedEntity = await context.ProjectEntities.FindAsync(guid1);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(updatedEntity, Is.Not.Null);
+                    Assert.That(updatedEntity?.Description, Is.EqualTo("Обновленный тестовый проект"));
+                    Assert.That(updatedEntity?.Status, Is.EqualTo("В процессе"));
+                });
+            }
         }
 
+
         [Test]
-        public async Task GetByPredicateShouldReturnFalseIfReturnsHaveWrongRecords()
+        public async Task GetByPredicateShouldReturnCorrectEntities()
         {
             // Arrange
             var guid1 = Guid.NewGuid();
             var guid2 = Guid.NewGuid();
             var purposeDate = DateTime.Now.AddHours(-1);
             Expression<Func<ProjectEntity, bool>> predicate = e => e.StartDate > purposeDate;
+
             var entities = new List<ProjectEntity>
-        {
-            new() { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now.AddHours(-2) },
-            new() { Id = guid2, Description = "Тестовый проект 2", Name = "Project2", Status = "Новый", StartDate = DateTime.Now }
-        }.AsQueryable();
+            {
+                new() { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now.AddHours(-2) },
+                new() { Id = guid2, Description = "Тестовый проект 2", Name = "Project2", Status = "Новый", StartDate = DateTime.Now }
+            };
 
-            _repositoryMock.Setup(repo => repo.GetByPredicate(It.IsAny<Expression<Func<ProjectEntity, bool>>>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync((Expression<Func<ProjectEntity, bool>> pred, CancellationToken ct) =>
-                        entities.Where(pred).ToList());
+            using (var context = new DataContext(_options))
+            {
+                context.ProjectEntities.AddRange(entities);
+                await context.SaveChangesAsync();
+            }
 
-            // Act
-            var result = await _repositoryMock.Object.GetByPredicate(predicate, CancellationToken.None);
+            using (var context = new DataContext(_options))
+            {
+                var repository = new ProjectsRepository(context);
 
-            // Assert
-            Assert.That(result.Any(x => x.StartDate <= purposeDate), Is.False);
+                // Act
+                var result = await repository.GetByPredicate(predicate, CancellationToken.None);
+
+                // Assert
+                Assert.Multiple(() =>
+                {
+                    Assert.That(result.Any(x => x.StartDate <= purposeDate), Is.False);
+                    Assert.That(result.Count(), Is.EqualTo(1));
+                    Assert.That(result.First().Id, Is.EqualTo(guid2));
+                });
+            }
         }
 
         [Test]
@@ -172,13 +304,37 @@
         {
             // Arrange
             var ProjectEntityId = Guid.NewGuid();
-            _repositoryMock.Setup(repo => repo.Delete(ProjectEntityId, It.IsAny<CancellationToken>())).ReturnsAsync(true);
 
-            // Act
-            var result = await _repositoryMock.Object.Delete(ProjectEntityId, CancellationToken.None);
+            // Создаем сущность для добавления в базу данных
+            var entity = new ProjectEntity
+            {
+                Id = ProjectEntityId,
+                Description = "Тестовый проект",
+                Name = "Project",
+                Status = "Новый",
+                StartDate = DateTime.Now
+            };
 
-            // Assert
-            Assert.That(result, Is.True);
+            using (var context = new DataContext(_options))
+            {
+                context.ProjectEntities.Add(entity);
+                await context.SaveChangesAsync();
+            }
+
+            using (var context = new DataContext(_options))
+            {
+                var repository = new ProjectsRepository(context);
+
+                // Act
+                var result = await repository.Delete(ProjectEntityId, CancellationToken.None);
+
+                // Assert
+                Assert.That(result, Is.True);
+
+                // Проверяем, что сущность действительно удалена из базы данных
+                var deletedEntity = await context.ProjectEntities.FindAsync(ProjectEntityId);
+                Assert.That(deletedEntity, Is.Null);
+            }
         }
     }
 }

@@ -1,8 +1,9 @@
 global using AutoMapper;
-global using Domain.Abstractions;
+global using DataAccess;
+global using DataAccess.Repositories;
 global using Domain.Entities;
+global using Microsoft.EntityFrameworkCore;
 global using Models.Dto;
-global using Moq;
 global using NUnit.Framework;
 global using Services.AutoMapper;
 global using System.Linq.Expressions;
