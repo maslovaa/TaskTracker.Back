@@ -37,7 +37,7 @@ public class UserRepository : Repository<UserEntity, Guid>, IUserRepository
     /// <returns>Результат операции удаления.</returns>
     public override bool Delete(UserEntity user)
     {
-        if (user is null)
+        if (user is null || !user.IsActive)
         {
             return false;
         }
