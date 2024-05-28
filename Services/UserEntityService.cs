@@ -44,13 +44,13 @@ public class UserEntityService : IUserEntityService
 
         user.UserName = updatingUserDto.UserName;
         user.Email = updatingUserDto.Email;
-        await _userRepository.Update(user);
+        _userRepository.Update(user);
       
     }
 
     ///<inheritdoc/>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.Delete(id, cancellationToken);
+        var user = await _userRepository.DeleteAsync(id, cancellationToken);
     }
 }

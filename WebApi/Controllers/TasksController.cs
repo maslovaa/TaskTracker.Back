@@ -14,7 +14,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskDto>>> GetAsync()
         {
-            return _mapper.Map<List<TaskDto>>(await _tasksRepository.GetByPredicate(x => true, CancellationToken.None));
+            return _mapper.Map<List<TaskDto>>(await _tasksRepository.GetByPredicateAsync(x => true, CancellationToken.None));
         }
 
         // GET api/Tasks/<Guid>
@@ -35,14 +35,14 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task<ActionResult<bool>> Put([FromBody] TaskDto taskDto)
         {
-            return await _tasksRepository.Update(_mapper.Map<TaskEntity>(taskDto));
+            return await _tasksRepository.UpdateAsync(_mapper.Map<TaskEntity>(taskDto), CancellationToken.None);
         }
 
         // DELETE api/Tasks/<Giud>
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(Guid id)
         {
-            return await _tasksRepository.Delete(id, CancellationToken.None);
+            return await _tasksRepository.DeleteAsync(id, CancellationToken.None);
         }
     }
 }
