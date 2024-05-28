@@ -1,5 +1,6 @@
 using DataAccess;
 using DataAccess.Repositories;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Tests.Builders;
 
@@ -89,5 +90,39 @@ public class UserRepositoryTests
             // Assert
             Assert.IsFalse(result);
         }
+    }
+
+    [Test]
+    public async Task GetAllAsync_ShouldReturnCollectionByQuery()
+    {
+        // Arrange
+        List<UserEntity> queryResult;
+        int expectedCount = 2;
+        var usersList = new List<UserEntity>()
+        {
+            UserBuilder.CreateBaseUser().WithProjects(),
+            UserBuilder.CreateBaseUser().WithProjects(),
+            UserBuilder.CreateBaseUser()
+        };
+        
+        using (var context = new DataContext(_options))
+        {
+            context.Users.AddRange(usersList);
+            await context.SaveChangesAsync();
+        }
+
+        using (var context = new DataContext(_options))
+        {
+            var userRepository = new UserRepository(context);
+            
+            // Act
+            
+            var users = (await userRepository.GetAllAsync(CancellationToken.None))
+                .Where(u => u.Projects.Any());
+            queryResult =  await users.ToListAsync();
+        }
+        
+        // Assert
+        Assert.AreEqual(expectedCount, queryResult.Count);
     }
 }
