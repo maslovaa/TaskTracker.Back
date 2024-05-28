@@ -10,7 +10,7 @@ namespace DataAccess.Repositories;
 /// <typeparam name="T">Тип репозитория.</typeparam>
 /// <typeparam name="TId">Тип идентификатора.</typeparam>
 public abstract class Repository<T, TId> : IRepository<T, TId> 
-    where T : class, IEntity<TId>
+    where T : class, IEntity<TId>, IIsActive
     where TId : struct
 {
     protected DataContext _context;
@@ -23,15 +23,7 @@ public abstract class Repository<T, TId> : IRepository<T, TId>
     /// <inheritdoc/>
     public virtual IQueryable<T> GetAll(bool noTracking = false)
     {
-        return noTracking ? _context.Set<T>().AsNoTracking() : _context.Set<T>();
-    }
-
-    /// <inheritdoc/>
-    public virtual async Task<IQueryable<T>> GetAllAsync(CancellationToken cancellationToken, bool noTracking = false)
-    {
-        return noTracking 
-            ? await Task.FromResult(_context.Set<T>().AsNoTracking()) 
-            : _context.Set<T>().AsQueryable();
+        return noTracking ? _context.Set<T>().Where(x => x.IsActive == true).AsNoTracking() : _context.Set<T>().Where(x => x.IsActive == true);
     }
     
     /// <inheritdoc/>>
@@ -77,18 +69,24 @@ public abstract class Repository<T, TId> : IRepository<T, TId>
     }
 
     /// <inheritdoc/>
-    public virtual async Task<IEnumerable<T>> GetByPredicate(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
+    public virtual async Task<IEnumerable<T>> GetByPredicateAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
     {
         return await _context.Set<T>().Where(predicate).ToListAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
-    public virtual async Task<bool> Update(T entity)
+    public virtual IEnumerable<T> GetByPredicate(Expression<Func<T, bool>> predicate)
+    {
+        return _context.Set<T>().Where(predicate).ToList();
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task<bool> UpdateAsync(T entity, CancellationToken cancellationToken)
     {
         try
         {
             _context.Set<T>().Update(entity);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
         catch (Exception e)
@@ -98,28 +96,42 @@ public abstract class Repository<T, TId> : IRepository<T, TId>
     }
 
     /// <inheritdoc/>
-    public virtual async Task<bool> Delete(TId id, CancellationToken cancellationToken)
+    public virtual bool Update(T entity)
+    {
+        try
+        {
+            _context.Set<T>().Update(entity);
+            _context.SaveChanges();
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual async Task<bool> DeleteAsync(TId id, CancellationToken cancellationToken)
     {
         var entity = await _context.Set<T>().FindAsync(id, cancellationToken);
         if (entity is null)
         {
             return false;
         }
-
-        _context.Set<T>().Remove(entity);
+        entity.IsActive = false;
         await _context.SaveChangesAsync(cancellationToken) ;
         return true;
     }
 
-    /// <inheritdoc/>
-    public virtual bool Delete(T entity)
+    public virtual bool Delete(TId id)
     {
+        var entity = _context.Set<T>().Find(id);
         if (entity is null)
         {
             return false;
         }
-
-        _context.Set<T>().Entry(entity).State = EntityState.Deleted;
+        entity.IsActive = false;
+        _context.SaveChanges();
         return true;
     }
 }

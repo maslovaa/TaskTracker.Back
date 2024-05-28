@@ -19,14 +19,6 @@ public interface IRepository<T, TId>
     IQueryable<T> GetAll(bool noTracking = false);
 
     /// <summary>
-    /// Асинхронное получение всех сущностей.
-    /// </summary>
-    /// <param name="cancellationToken">Токен отмены.</param>
-    /// <param name="noTracking">Флаг отслеживания.</param>
-    /// <returns>Коллекция элементов.</returns>
-    Task<IQueryable<T>> GetAllAsync(CancellationToken cancellationToken, bool noTracking = false);
-
-    /// <summary>
     /// Добавление сущностей в хранилище.
     /// </summary>
     /// <param name="entity">Сущность.</param>
@@ -61,14 +53,28 @@ public interface IRepository<T, TId>
     /// <param name="predicate">Предикат.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Коллекция элементов.</returns>
-    Task<IEnumerable<T>> GetByPredicate(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken);
+    Task<IEnumerable<T>> GetByPredicateAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Получение коллекции сущностей по предикату.
+    /// </summary>
+    /// <param name="predicate">Предикат.</param>
+    /// <returns>Коллекция элементов.</returns>
+    IEnumerable<T> GetByPredicate(Expression<Func<T, bool>> predicate);
+
+    /// <summary>
+    /// Асинхронное обновление сущности.
+    /// </summary>
+    /// <param name="entity">Сущность.</param>
+    /// <returns>Результат операции обновления.</returns>
+    Task<bool> UpdateAsync(T entity, CancellationToken cancellationToken);
 
     /// <summary>
     /// Обновление сущности.
     /// </summary>
     /// <param name="entity">Сущность.</param>
     /// <returns>Результат операции обновления.</returns>
-    Task<bool> Update(T entity);
+    bool Update(T entity);
 
     /// <summary>
     /// Удаление сущности.
@@ -76,12 +82,13 @@ public interface IRepository<T, TId>
     /// <param name="id">Идентификатор.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Результат операции удаления.</returns>
-    Task<bool> Delete(TId id, CancellationToken cancellationToken);
+    Task<bool> DeleteAsync(TId id, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Удаление сущности.
+    /// Асинхронное удаление сущности.
     /// </summary>
-    /// <param name="entity">Сущность.</param>
+    /// <param name="id">Идентификатор.</param>
     /// <returns>Результат операции удаления.</returns>
-    bool Delete(T entity);
+    bool Delete(TId id);
+
 }
