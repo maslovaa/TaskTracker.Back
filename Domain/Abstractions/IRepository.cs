@@ -12,6 +12,13 @@ public interface IRepository<T, TId>
     where T : IEntity<TId>
 {
     /// <summary>
+    /// Получение всех сущностей.
+    /// </summary>
+    /// <param name="noTracking">Флаг отслеживания.</param>
+    /// <returns>Объект запроса.</returns>
+    IQueryable<T> GetAll(bool noTracking = false);
+
+    /// <summary>
     /// Добавление сущностей в хранилище.
     /// </summary>
     /// <param name="entity">Сущность.</param>
