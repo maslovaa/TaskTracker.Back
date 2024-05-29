@@ -24,7 +24,7 @@ public interface IRepository<T, TId>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <param name="noTracking">Флаг отслеживания.</param>
     /// <returns>Коллекция элементов.</returns>
-    Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken, bool noTracking = false);
+    Task<IQueryable<T>> GetAllAsync(CancellationToken cancellationToken, bool noTracking = false);
 
     /// <summary>
     /// Добавление сущностей в хранилище.
