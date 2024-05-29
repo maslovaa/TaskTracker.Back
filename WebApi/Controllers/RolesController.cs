@@ -15,7 +15,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RoleDto>>> GetAsync()
         {
-            return _mapper.Map<List<RoleDto>>(await _rolesRepository.GetByPredicate(x => true, CancellationToken.None));
+            return _mapper.Map<List<RoleDto>>(await _rolesRepository.GetByPredicateAsync(x => true, CancellationToken.None));
         }
 
         // GET api/Roles/<Guid>
@@ -36,14 +36,14 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task<ActionResult<bool>> Put([FromBody] RoleDto roleDto)
         {
-            return await _rolesRepository.Update(_mapper.Map<RoleEntity>(roleDto));
+            return await _rolesRepository.UpdateAsync(_mapper.Map<RoleEntity>(roleDto), CancellationToken.None);
         }
 
         // DELETE api/Roles/<Giud>
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(Guid id)
         {
-            return await _rolesRepository.Delete(id, CancellationToken.None);
+            return await _rolesRepository.DeleteAsync(id, CancellationToken.None);
         }
     }
 }

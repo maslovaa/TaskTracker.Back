@@ -14,7 +14,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DeskDto>>> GetAsync()
         {
-            return _mapper.Map<List<DeskDto>>(await _desksRepository.GetByPredicate(x => true, CancellationToken.None));
+            return _mapper.Map<List<DeskDto>>(await _desksRepository.GetByPredicateAsync(x => true, CancellationToken.None));
         }
 
         // GET api/Desks/<Guid>
@@ -35,14 +35,14 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task<ActionResult<bool>> Put([FromBody] DeskDto deskDto)
         {
-            return await _desksRepository.Update(_mapper.Map<DeskEntity>(deskDto));
+            return await _desksRepository.UpdateAsync(_mapper.Map<DeskEntity>(deskDto), CancellationToken.None);
         }
 
         // DELETE api/Desks/<Giud>
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(Guid id)
         {
-            return await _desksRepository.Delete(id, CancellationToken.None);
+            return await _desksRepository.DeleteAsync(id, CancellationToken.None);
         }
     }
 }

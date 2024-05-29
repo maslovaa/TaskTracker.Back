@@ -5,7 +5,7 @@ namespace Domain.Entities;
 /// <summary>
 /// Модель пользователя.
 /// </summary>
-public class UserEntity : NamedEntity
+public class UserEntity : NamedEntity, IIsActive
 {
     /// <summary>
     /// Фамилия.
@@ -23,7 +23,7 @@ public class UserEntity : NamedEntity
     public string UserName { get; set; }
     
     /// <summary>
-    ///  Электронная почта.
+    /// Электронная почта.
     /// </summary>
     public string Email { get; set; }
     
@@ -31,8 +31,13 @@ public class UserEntity : NamedEntity
     /// Признак активности.
     /// </summary>
     public bool IsActive { get; set; }
+
     /// <summary>
-    /// Проекты.
+    /// Владелец проектов.
+    /// </summary>
+    public IEnumerable<ProjectEntity> OwnersProjects { get; set; }
+    /// <summary>
+    /// Пользователь проектов.
     /// </summary>
     public IEnumerable<ProjectEntity> Projects { get; set; }
     /// <summary>

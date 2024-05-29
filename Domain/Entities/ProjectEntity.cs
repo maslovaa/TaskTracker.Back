@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities
+﻿using Domain.Abstractions;
+
+namespace Domain.Entities
 {
-    public class ProjectEntity : NamedEntity
+    public class ProjectEntity : NamedEntity, IIsActive
     {
         /// <summary>
         /// Описание проекта
@@ -28,8 +30,18 @@
         public UserEntity Owner { get; set; }
 
         /// <summary>
+        /// Пользователи проекта
+        /// </summary>
+        public IEnumerable<UserEntity> Users { get; set; }
+
+        /// <summary>
         /// Доски проекта
         /// </summary>
         public IEnumerable<DeskEntity> Desks { get; set; }
+
+        /// <summary>
+        /// Флаг активности
+        /// </summary>
+        public bool IsActive { get; set; }
     }
 }
