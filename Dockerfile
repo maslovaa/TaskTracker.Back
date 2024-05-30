@@ -18,10 +18,16 @@ RUN dotnet restore ./TaskTracker.Back.sln
 COPY . ./
 RUN dotnet publish ./WebApi/WebApi.csproj -c Release -o out
 
+# Проверяем содержимое директории out
+RUN ls -la /app/WebApi/out
+
 # Используем официальный образ .NET Runtime для запуска приложения
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build-env /app/WebApi/out .
+
+# Проверяем содержимое директории после копирования
+RUN ls -la /app
 
 # Открываем порт, если это необходимо
 EXPOSE 80
