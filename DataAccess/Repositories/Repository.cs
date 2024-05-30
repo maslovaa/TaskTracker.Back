@@ -19,13 +19,13 @@ public abstract class Repository<T, TId> : IRepository<T, TId>
     {
         _context = context;
     }
-    
+
     /// <inheritdoc/>
     public virtual IQueryable<T> GetAll(bool noTracking = false)
     {
         return noTracking ? _context.Set<T>().Where(x => x.IsActive == true).AsNoTracking() : _context.Set<T>().Where(x => x.IsActive == true);
     }
-    
+
     /// <inheritdoc/>>
     public virtual TId Add(T entity)
     {
