@@ -34,7 +34,7 @@ jobs:
         with:
             files: './WebApi/appsettings.json'
         env:
-            ConnectionStrings.Default: ${{ secrets.CONNECTION_STRING }}
+            ConnectionStrings.DefaultConnection: ${{ secrets.CONNECTION_STRING }}
 
       - name: Test with the dotnet CLI
         run: dotnet test
