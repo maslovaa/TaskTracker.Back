@@ -69,5 +69,5 @@ jobs:
             docker pull almasvas/tasktracker.back:latest
             docker stop tasktracker.back-container || true
             docker rm tasktracker.back-container || true
-            docker run -d --name tasktracker.back-container almasvas/tasktracker.back:latest
+            docker run -d -p 5067:5067 --name tasktracker.back-container almasvas/tasktracker.back:latest
 
