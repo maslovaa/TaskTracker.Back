@@ -27,8 +27,8 @@
             using (var context = new DataContext(_options))
             {
                 context.ProjectEntities.AddRange(
-                    new ProjectEntity { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now },
-                    new ProjectEntity { Id = guid2, Description = "Тестовый проект 2", Name = "Project2", Status = "Новый", StartDate = DateTime.Now }
+                    new ProjectEntity { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now, IsActive = true },
+                    new ProjectEntity { Id = guid2, Description = "Тестовый проект 2", Name = "Project2", Status = "Новый", StartDate = DateTime.Now, IsActive = true }
                 );
                 context.SaveChanges();
             }
@@ -302,7 +302,7 @@
 
                 // Проверяем, что сущность действительно удалена из базы данных
                 var deletedEntity = await context.ProjectEntities.FindAsync(ProjectEntityId);
-                Assert.That(deletedEntity, Is.Null);
+                Assert.That(deletedEntity?.IsActive, Is.False);
             }
         }
     }
