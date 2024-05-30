@@ -1,5 +1,5 @@
 # Используем официальный образ .NET SDK для сборки
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
 
 # Копируем файл решения и все файлы проектов
@@ -15,7 +15,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Используем официальный образ .NET Runtime для запуска приложения
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build-env /app/WebApi/out .
 
