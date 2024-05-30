@@ -26,6 +26,9 @@ jobs:
       - name: Check Directory Contents
         run: ls -la ${{env.DOTNET_ROOT}}
 
+      - name: Check Directory
+        run: ls -la
+
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
