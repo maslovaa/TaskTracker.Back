@@ -24,7 +24,7 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 
 # Открываем порт, если это необходимо
-EXPOSE 80
+EXPOSE 5067
 
 # Указываем команду для запуска приложения
 ENTRYPOINT ["dotnet", "WebApi.dll"]
