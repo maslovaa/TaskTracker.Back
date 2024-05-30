@@ -5,6 +5,11 @@ WORKDIR /app
 # Копируем файл решения и все файлы проектов
 COPY *.sln ./
 COPY WebApi/*.csproj ./WebApi/
+COPY Domain/*.csproj ./Domain/
+COPY DataAccess/*.csproj ./DataAccess/
+COPY Models/*.csproj ./Models/
+COPY Services/*.csproj ./Services/
+COPY Tests/*.csproj ./Tests/
 
 # Восстанавливаем зависимости, указывая конкретный файл решения
 RUN dotnet restore ./TaskTracker.Back.sln
