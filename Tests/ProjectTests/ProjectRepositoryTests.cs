@@ -19,37 +19,6 @@
         }
 
         [Test]
-        public async Task GetAllAsyncShouldReturnEntities()
-        {
-            // Arrange
-            var guid1 = Guid.NewGuid();
-            var guid2 = Guid.NewGuid();
-            using (var context = new DataContext(_options))
-            {
-                context.ProjectEntities.AddRange(
-                    new ProjectEntity { Id = guid1, Description = "Тестовый проект 1", Name = "Project1", Status = "Новый", StartDate = DateTime.Now },
-                    new ProjectEntity { Id = guid2, Description = "Тестовый проект 2", Name = "Project2", Status = "Новый", StartDate = DateTime.Now }
-                );
-                context.SaveChanges();
-            }
-
-            using (var context = new DataContext(_options))
-            {
-                var repository = new ProjectsRepository(context);
-
-                // Act
-                var result = await repository.GetAllAsync(CancellationToken.None);
-
-                // Assert
-                Assert.Multiple(() =>
-                {
-                    Assert.That(result.Count(), Is.EqualTo(2));
-                    Assert.That(result.First().Id, Is.EqualTo(guid1));
-                });
-            }
-        }
-
-        [Test]
         public void GetAllShouldReturnEntities()
         {
             // Arrange
@@ -244,7 +213,7 @@
                 projectEntity.Status = "В процессе";
 
                 // Act
-                var result = await repository.Update(projectEntity);
+                var result = await repository.UpdateAsync(projectEntity, CancellationToken.None);
 
                 // Assert
                 Assert.That(result, Is.True);
@@ -287,7 +256,7 @@
                 var repository = new ProjectsRepository(context);
 
                 // Act
-                var result = await repository.GetByPredicate(predicate, CancellationToken.None);
+                var result = await repository.GetByPredicateAsync(predicate, CancellationToken.None);
 
                 // Assert
                 Assert.Multiple(() =>
@@ -326,7 +295,7 @@
                 var repository = new ProjectsRepository(context);
 
                 // Act
-                var result = await repository.Delete(ProjectEntityId, CancellationToken.None);
+                var result = await repository.DeleteAsync(ProjectEntityId, CancellationToken.None);
 
                 // Assert
                 Assert.That(result, Is.True);
