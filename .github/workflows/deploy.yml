@@ -58,7 +58,7 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          script_stop: false # Продолжать выполнение, даже если один из команд завершится ошибкой
+          script_stop: false
           script: |
             docker pull almasvas/tasktracker.back:latest
             docker stop tasktracker.back-container || true

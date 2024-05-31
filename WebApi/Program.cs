@@ -19,7 +19,7 @@ builder.Services.AddServices();
 
 var app = builder.Build();
 
-// Получаем контекст базы данных через DI контейнер и вызываем инициализацию
+// Инициализация БД
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
