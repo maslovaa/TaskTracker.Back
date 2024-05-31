@@ -12,9 +12,9 @@ namespace WebApi.Controllers
     {
         // GET: api/Projects
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAsync()
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAllWithRelated()
         {
-            return _mapper.Map<List<ProjectDto>>(await _projectsRepository.GetByPredicateAsync(x => true, CancellationToken.None));
+            return _mapper.Map<List<ProjectDto>>(_projectsRepository.GetAllWithRelated());
         }
 
         // GET api/Projects/<Guid>

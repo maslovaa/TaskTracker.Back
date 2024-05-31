@@ -19,6 +19,14 @@ builder.Services.AddServices();
 
 var app = builder.Build();
 
+// ѕолучаем контекст базы данных через DI контейнер и вызываем инициализацию
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<DataContext>();
+    DbInitializer.Initialize(context);
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()|| app.Environment.IsProduction())
 {
