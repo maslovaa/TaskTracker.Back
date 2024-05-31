@@ -19,7 +19,7 @@ builder.Services.AddServices();
 
 var app = builder.Build();
 
-// Инициализация БД
+// Initialize DB
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
