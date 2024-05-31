@@ -180,7 +180,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("ProjectEntityUserEntity");
+                    b.ToTable("ProjectEntityUserEntity", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.DeskEntity", b =>
