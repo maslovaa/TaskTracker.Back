@@ -1,6 +1,8 @@
 using DataAccess;
 using DataAccess.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Hosting;
 using Services.AutoMapper;
 using Services.Extensions;
 
@@ -19,12 +21,16 @@ builder.Services.AddServices();
 
 var app = builder.Build();
 
-// Initialize DB
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<DataContext>();
-    DbInitializer.Initialize(context);
+
+    if (!context.Database.CanConnect())
+    {
+        context.Database.Migrate(); // ѕримен€ем миграции только если база данных не существует
+        DbSeeder.Seed(context); // «аполн€ем начальными данными
+    }
 }
 
 // Configure the HTTP request pipeline.

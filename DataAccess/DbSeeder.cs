@@ -2,16 +2,10 @@
 
 namespace DataAccess
 {
-    public static class DbInitializer
+    public static class DbSeeder
     {
-        public static void Initialize(DataContext context)
+        public static void Seed(DataContext context)
         {
-            // Если БД уже существовала, пропускаем инициализацию
-            if (!context.Database.EnsureCreated())
-            {
-                return;
-            }
-
             // Создадим тестовые роли
             var testRoles = new List<RoleEntity>
             {
