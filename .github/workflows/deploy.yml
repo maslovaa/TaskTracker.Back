@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - TRACKER-39
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,6 +31,7 @@ jobs:
           path: |
             ./WebApi/bin/Release/
             ./WebApi/obj/
+            ./WebApi/obj/project.assets.json
 
   test:
     needs: build
@@ -70,7 +72,7 @@ jobs:
             ConnectionStrings.DefaultConnection: ${{ secrets.CONNECTION_STRING }}
 
       - name: Publish the project
-        run: dotnet publish --configuration Release --output ./out --no-build
+        run: dotnet publish ./WebApi/WebApi.csproj --configuration Release --output ./out --no-build --no-restore
 
       - name: Build Docker image
         run: docker build -t almasvas/tasktracker.back:latest .
