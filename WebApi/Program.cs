@@ -1,4 +1,4 @@
-using DataAccess;
+п»їusing DataAccess;
 using DataAccess.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -28,8 +28,8 @@ using (var scope = app.Services.CreateScope())
 
     if (!context.Database.CanConnect())
     {
-        context.Database.Migrate(); // Применяем миграции только если база данных не существует
-        DbSeeder.Seed(context); // Заполняем начальными данными
+        context.Database.Migrate(); // РџСЂРёРјРµРЅСЏРµРј РјРёРіСЂР°С†РёРё С‚РѕР»СЊРєРѕ РµСЃР»Рё Р±Р°Р·Р° РґР°РЅРЅС‹С… РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚
+        DbSeeder.Seed(context); // Р—Р°РїРѕР»РЅСЏРµРј РЅР°С‡Р°Р»СЊРЅС‹РјРё РґР°РЅРЅС‹РјРё
     }
 }
 
