@@ -3,7 +3,7 @@ name: CI CD pipeline
 on:
   push:
     branches:
-      - master
+      - TRACKER-39
 
 jobs:
   build:
@@ -51,7 +51,7 @@ jobs:
         run: dotnet test
 
   deploy:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
