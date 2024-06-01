@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{17705A65-5BFA-459E-A8CC-064D2B66D7DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{68DDD03C-0795-4DA7-9225-E38F3D12B340}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{68DDD03C-0795-4DA7-9225-E38F3D12B340}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
