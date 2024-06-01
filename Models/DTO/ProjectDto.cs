@@ -38,6 +38,11 @@
         public UserDto Owner { get; set; }
 
         /// <summary>
+        /// Пользователи проекта
+        /// </summary>
+        public IEnumerable<UserDto> Users { get; set; }
+
+        /// <summary>
         /// Доски проекта
         /// </summary>
         public IEnumerable<DeskDto> Desks { get; set; }

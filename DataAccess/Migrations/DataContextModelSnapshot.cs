@@ -28,8 +28,13 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -57,7 +62,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -88,7 +95,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -117,7 +126,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
                     b.Property<Guid?>("PerformerId")
                         .HasColumnType("uuid");
@@ -144,7 +155,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -180,7 +193,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("ProjectEntityUserEntity", (string)null);
+                    b.ToTable("ProjectEntityUserEntity");
                 });
 
             modelBuilder.Entity("Domain.Entities.DeskEntity", b =>
