@@ -45,7 +45,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-output
-          path: ./
+          path: ./WebApi/
 
       - name: Test with the dotnet CLI
         run: dotnet test
@@ -62,7 +62,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-output
-          path: ./
+          path: ./WebApi/
 
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
