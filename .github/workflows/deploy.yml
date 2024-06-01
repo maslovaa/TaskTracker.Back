@@ -1,4 +1,4 @@
-name: CI CD pipline
+name: CI CD pipeline
 
 on:
   push:
@@ -23,12 +23,13 @@ jobs:
       - name: Build the project
         run: dotnet build --configuration Release --no-restore
 
-      - name: App Settings Variable Substitution
-        uses: microsoft/variable-substitution@v1
+      - name: Archive build output
+        uses: actions/upload-artifact@v2
         with:
-            files: './WebApi/appsettings.json'
-        env:
-            ConnectionStrings.DefaultConnection: ${{ secrets.CONNECTION_STRING }}
+          name: build-output
+          path: |
+            ./WebApi/bin/Release/
+            ./WebApi/obj/
 
   test:
     needs: build
@@ -37,6 +38,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Download build output
+        uses: actions/download-artifact@v2
+        with:
+          name: build-output
+          path: ./
 
       - name: Test with the dotnet CLI
         run: dotnet test
@@ -48,6 +55,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Download build output
+        uses: actions/download-artifact@v2
+        with:
+          name: build-output
+          path: ./
+
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+            files: './WebApi/appsettings.json'
+        env:
+            ConnectionStrings.DefaultConnection: ${{ secrets.CONNECTION_STRING }}
 
       - name: Publish the project
         run: dotnet publish --configuration Release --output ./out --no-build
@@ -63,6 +83,7 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: docker push almasvas/tasktracker.back:latest
+
       - name: SSH to Server and Deploy
         uses: appleboy/ssh-action@v0.1.5
         with:
@@ -75,4 +96,3 @@ jobs:
             docker stop tasktracker.back-container || true
             docker rm tasktracker.back-container || true
             docker run -d -p 8080:8080 --name tasktracker.back-container almasvas/tasktracker.back:latest
-
