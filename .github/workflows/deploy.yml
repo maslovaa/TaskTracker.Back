@@ -35,6 +35,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check Directory Contents
+        run: ls -la .
       - name: Test with the dotnet CLI
         run: dotnet test
 
