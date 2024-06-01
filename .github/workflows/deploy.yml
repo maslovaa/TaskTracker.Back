@@ -37,8 +37,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Check Directory Contents
-        run: ls -la .
+
       - name: Test with the dotnet CLI
         run: dotnet test
 
@@ -47,6 +46,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Publish the project
         run: dotnet publish --configuration Release --output ./out --no-build
 
