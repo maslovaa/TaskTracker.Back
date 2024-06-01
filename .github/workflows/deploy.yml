@@ -3,7 +3,7 @@ name: CI CD pipline
 on:
   push:
     branches:
-      - master
+      - TRACKER-39
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,9 +30,19 @@ jobs:
         env:
             ConnectionStrings.DefaultConnection: ${{ secrets.CONNECTION_STRING }}
 
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Test with the dotnet CLI
         run: dotnet test
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Publish the project
         run: dotnet publish --configuration Release --output ./out --no-build
 
@@ -47,11 +57,6 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: docker push almasvas/tasktracker.back:latest
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: SSH to Server and Deploy
         uses: appleboy/ssh-action@v0.1.5
         with:
