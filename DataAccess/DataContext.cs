@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.Abstractions;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
@@ -65,6 +66,19 @@ namespace DataAccess
                 .HasKey(e => e.Id);
             modelBuilder.Entity<RoleEntity>()
                 .HasMany(x => x.Users);
+
+            // Найдём все типы, которые реализуют интерфейс IIsActive
+            var isActiveInterface = typeof(IIsActive);
+            var entityTypes = modelBuilder.Model.GetEntityTypes()
+                .Where(t => isActiveInterface.IsAssignableFrom(t.ClrType));
+
+            foreach (var entityType in entityTypes)
+            {
+                // Установим значение по умолчанию для свойства IsActive
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property(nameof(IIsActive.IsActive))
+                    .HasDefaultValue(true);
+            }
 
             base.OnModelCreating(modelBuilder);
         }

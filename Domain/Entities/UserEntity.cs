@@ -5,7 +5,7 @@ namespace Domain.Entities;
 /// <summary>
 /// Модель пользователя.
 /// </summary>
-public class UserEntity : NamedEntity
+public class UserEntity : NamedEntity, IIsActive
 {
     /// <summary>
     /// Фамилия.
@@ -31,6 +31,7 @@ public class UserEntity : NamedEntity
     /// Признак активности.
     /// </summary>
     public bool IsActive { get; set; }
+
     /// <summary>
     /// Владелец проектов.
     /// </summary>

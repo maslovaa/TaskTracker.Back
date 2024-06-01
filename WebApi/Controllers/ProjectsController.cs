@@ -12,9 +12,9 @@ namespace WebApi.Controllers
     {
         // GET: api/Projects
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAsync()
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAllWithRelated()
         {
-            return _mapper.Map<List<ProjectDto>>(await _projectsRepository.GetByPredicate(x => true, CancellationToken.None));
+            return _mapper.Map<List<ProjectDto>>(_projectsRepository.GetAllWithRelated());
         }
 
         // GET api/Projects/<Guid>
@@ -35,14 +35,14 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task<ActionResult<bool>> Put([FromBody] ProjectDto projectDto)
         {
-            return await _projectsRepository.Update(_mapper.Map<ProjectEntity>(projectDto));
+            return await _projectsRepository.UpdateAsync(_mapper.Map<ProjectEntity>(projectDto), CancellationToken.None);
         }
 
         // DELETE api/Projects/<Giud>
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(Guid id)
         {
-            return await _projectsRepository.Delete(id, CancellationToken.None);
+            return await _projectsRepository.DeleteAsync(id, CancellationToken.None);
         }
     }
 }

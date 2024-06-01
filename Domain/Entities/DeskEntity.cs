@@ -1,8 +1,13 @@
-﻿namespace Domain.Entities
+﻿using Domain.Abstractions;
+
+namespace Domain.Entities
 {
-    public class DeskEntity : NamedEntity
+    public class DeskEntity : NamedEntity, IIsActive
     {
         public ProjectEntity Project { get; set; }
+
+        public string Description { get; set; }
         public IEnumerable<TaskEntity> Tasks { get; set; }
+        public bool IsActive { get; set; }
     }
 }

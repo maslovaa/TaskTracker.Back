@@ -6,5 +6,6 @@ namespace Domain.Abstractions
 {
     public interface IProjectsRepository : IRepository<ProjectEntity, Guid>
     {
+        public IQueryable GetAllWithRelated();
     }
 }

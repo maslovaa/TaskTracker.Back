@@ -1,6 +1,8 @@
-using DataAccess;
+﻿using DataAccess;
 using DataAccess.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Hosting;
 using Services.AutoMapper;
 using Services.Extensions;
 
@@ -19,8 +21,20 @@ builder.Services.AddServices();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<DataContext>();
+
+    if (!context.Database.CanConnect())
+    {
+        context.Database.Migrate(); // Применяем миграции только если база данных не существует
+        DbSeeder.Seed(context); // Заполняем начальными данными
+    }
+}
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment()|| app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
