@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>true</InvariantGlobalization>
         <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+        <UserSecretsId>3dccc850-e6bf-4b19-8dfc-3a30284dc7fe</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
