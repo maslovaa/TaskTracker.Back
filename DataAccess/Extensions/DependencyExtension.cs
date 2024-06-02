@@ -1,8 +1,6 @@
 ﻿using DataAccess.Repositories;
 using Domain.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
-using Services;
-using Services.Abstractions;
 
 namespace DataAccess.Extensions
 {

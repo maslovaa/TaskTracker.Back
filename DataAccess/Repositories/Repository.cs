@@ -59,13 +59,14 @@ public abstract class Repository<T, TId> : IRepository<T, TId>
     /// <inheritdoc/>
     public virtual T GetById(TId id)
     {
-        return _context.Set<T>().Find(id);
+        return _context.Set<T>().SingleOrDefault(e => e.Id.Equals(id) && e.IsActive);
     }
 
     /// <inheritdoc/>
     public virtual async Task<T> GetByIdAsync(TId id, CancellationToken cancellationToken)
     {
-        return await _context.Set<T>().FindAsync(id, cancellationToken);
+        var entity = await _context.Set<T>().FindAsync(id, cancellationToken);
+        return entity?.IsActive.Equals(true) == true ? entity : null;
     }
 
     /// <inheritdoc/>

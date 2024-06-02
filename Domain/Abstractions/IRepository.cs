@@ -12,7 +12,7 @@ public interface IRepository<T, TId>
     where T : IEntity<TId>
 {
     /// <summary>
-    /// Получение всех сущностей.
+    /// Получение запроса на все сущности.
     /// </summary>
     /// <param name="noTracking">Флаг отслеживания.</param>
     /// <returns>Объект запроса.</returns>
@@ -66,6 +66,7 @@ public interface IRepository<T, TId>
     /// Асинхронное обновление сущности.
     /// </summary>
     /// <param name="entity">Сущность.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Результат операции обновления.</returns>
     Task<bool> UpdateAsync(T entity, CancellationToken cancellationToken);
 
@@ -77,7 +78,7 @@ public interface IRepository<T, TId>
     bool Update(T entity);
 
     /// <summary>
-    /// Удаление сущности.
+    /// Асинхронное удаление сущности.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
@@ -85,7 +86,7 @@ public interface IRepository<T, TId>
     Task<bool> DeleteAsync(TId id, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Асинхронное удаление сущности.
+    /// Удаление сущности.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
     /// <returns>Результат операции удаления.</returns>
