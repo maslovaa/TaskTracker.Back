@@ -1,6 +1,7 @@
 using AutoMapper;
 using Domain.Entities;
 using Models.Dto;
+using Moq;
 using Services.AutoMapper;
 using Tests.Builders;
 
@@ -39,11 +40,10 @@ public class UserMapperTests
         var userDtoResult = _mapper.Map<UserDto>(userEntity);
         
         // Assert
-        Assert.AreEqual(userDto.UserName, userResult.UserName);
-        Assert.AreEqual(userDto.Email, userResult.Email);
-        Assert.AreEqual(userEntity.UserName, userDtoResult.UserName);
-        Assert.AreEqual(userEntity.Email, userDtoResult.Email);
-        
+        Assert.That(userDto.UserName, Is.EqualTo(userResult.UserName));
+        Assert.That(userDto.Email, Is.EqualTo(userResult.Email));
+        Assert.That(userEntity.UserName, Is.EqualTo(userDtoResult.UserName));
+        Assert.That(userEntity.Email, Is.EqualTo(userDtoResult.Email));
     }
     
     [Test]
@@ -67,15 +67,15 @@ public class UserMapperTests
         var userDtoResult = _mapper.Map<CreatingUserDto>(userEntity);
         
         // Assert
-        Assert.AreEqual(creatingUserDto.Name, userResult.Name);
-        Assert.AreEqual(creatingUserDto.Surname, userResult.Surname);
-        Assert.AreEqual(creatingUserDto?.Patronymic, userResult?.Patronymic);
-        Assert.AreEqual(creatingUserDto.UserName, userResult.UserName);
-        Assert.AreEqual(creatingUserDto.Email, userResult.Email);
-        Assert.AreEqual(userEntity.Name, userDtoResult.Name);
-        Assert.AreEqual(userEntity.Surname, userDtoResult.Surname);
-        Assert.AreEqual(userEntity?.Patronymic, userDtoResult?.Patronymic);
-        Assert.AreEqual(userEntity.UserName, userDtoResult.UserName);
-        Assert.AreEqual(userEntity.Email, userDtoResult.Email);
+        Assert.That(creatingUserDto.Name, Is.EqualTo(userResult.Name));
+        Assert.That(creatingUserDto.Surname, Is.EqualTo(userResult.Surname));
+        Assert.That(creatingUserDto?.Patronymic, Is.EqualTo(userResult?.Patronymic));
+        Assert.That(creatingUserDto?.UserName, Is.EqualTo(userResult?.UserName));
+        Assert.That(creatingUserDto?.Email, Is.EqualTo(userResult?.Email));
+        Assert.That(userEntity.Name, Is.EqualTo(userDtoResult.Name));
+        Assert.That(userEntity.Surname, Is.EqualTo(userDtoResult.Surname));
+        Assert.That(userEntity?.Patronymic, Is.EqualTo(userDtoResult?.Patronymic));
+        Assert.That(userEntity?.UserName, Is.EqualTo(userDtoResult?.UserName));
+        Assert.That(userEntity?.Email, Is.EqualTo(userDtoResult?.Email));
     }
 }
