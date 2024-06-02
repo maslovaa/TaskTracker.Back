@@ -44,7 +44,7 @@ public class UserEntityService : IUserEntityService
 
         user.UserName = updatingUserDto.UserName;
         user.Email = updatingUserDto.Email;
-        _userRepository.Update(user);
+        await _userRepository.UpdateAsync(user, CancellationToken.None);
       
     }
 
