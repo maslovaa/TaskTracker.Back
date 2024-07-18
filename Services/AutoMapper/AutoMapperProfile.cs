@@ -9,15 +9,25 @@ namespace Services.AutoMapper
         public AutoMapperProfile()
         {
             CreateMap<ProjectEntity, ProjectDto>();
-            CreateMap<ProjectDto, ProjectEntity>();
+            CreateMap<ProjectDto, ProjectEntity>()
+                .ForMember(dest => dest.IsActive,
+                opt => opt.MapFrom(src => true));
             CreateMap<TaskEntity, TaskDto>();
-            CreateMap<TaskDto, TaskEntity>();
+            CreateMap<TaskDto, TaskEntity>()
+                .ForMember(dest => dest.IsActive,
+                opt => opt.MapFrom(src => true));
             CreateMap<DeskEntity, DeskDto>();
-            CreateMap<DeskDto, DeskEntity>();
+            CreateMap<DeskDto, DeskEntity>()
+                .ForMember(dest => dest.IsActive,
+                opt => opt.MapFrom(src => true));
             CreateMap<UserDto, UserEntity>().ReverseMap();
-            CreateMap<CreatingUserDto, UserEntity>().ReverseMap();
+            CreateMap<CreatingUserDto, UserEntity>()
+                .ForMember(dest => dest.IsActive,
+                opt => opt.MapFrom(src => true));
             CreateMap<RoleEntity, RoleDto>();
-            CreateMap<RoleDto, RoleEntity>();
+            CreateMap<RoleDto, RoleEntity>()
+                .ForMember(dest => dest.IsActive,
+                opt => opt.MapFrom(src => true));
         }
     }
 }
