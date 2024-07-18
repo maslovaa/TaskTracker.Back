@@ -9,6 +9,7 @@ namespace DataAccess.Repositories
         public IQueryable GetAllWithRelated()
         {
             return context.ProjectEntities
+                .Where(p => p.IsActive)
                 .Include(x=>x.Desks).ThenInclude(x=>x.Tasks)
                 .Include(x => x.Owner).ThenInclude(x => x.Role)
                 .Include(x => x.Users).ThenInclude(x => x.Role);
