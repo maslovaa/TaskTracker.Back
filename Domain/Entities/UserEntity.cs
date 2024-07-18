@@ -1,4 +1,5 @@
 using Domain.Abstractions;
+using System.ComponentModel;
 
 namespace Domain.Entities;
 
@@ -26,7 +27,7 @@ public class UserEntity : NamedEntity, IIsActive
     /// Электронная почта.
     /// </summary>
     public string Email { get; set; }
-    
+
     /// <summary>
     /// Признак активности.
     /// </summary>
