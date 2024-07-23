@@ -14,5 +14,11 @@ namespace DataAccess.Repositories
                 .Include(x => x.Owner).ThenInclude(x => x.Role)
                 .Include(x => x.Users).ThenInclude(x => x.Role);
         }
+
+        public async Task<ProjectEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var entity = await _context.ProjectEntities.Include(x => x.Desks).FirstOrDefaultAsync(x => x.Id == id && x.IsActive, cancellationToken);
+            return entity;
+        }
     }
 }
