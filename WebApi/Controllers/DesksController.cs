@@ -14,7 +14,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DeskDto>>> GetAsync()
         {
-            return _mapper.Map<List<DeskDto>>(await _desksRepository.GetByPredicateAsync(x => true, CancellationToken.None));
+            return _mapper.Map<List<DeskDto>>(await _desksRepository.GetByPredicateAsync(x => x.IsActive, CancellationToken.None));
         }
 
         // GET api/Desks/<Guid>
