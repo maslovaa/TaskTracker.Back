@@ -10,7 +10,7 @@ namespace DataAccess.Repositories
 
         public async Task<DeskEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var entity = await _context.DeskEntities.Include(x => x.Tasks).FirstOrDefaultAsync(x => x.Id == id && x.IsActive, cancellationToken);
+            var entity = await _context.DeskEntities.Include(x => x.Tasks).ThenInclude(x => x.Status).FirstOrDefaultAsync(x => x.Id == id && x.IsActive, cancellationToken);
             return entity;
         }
     }

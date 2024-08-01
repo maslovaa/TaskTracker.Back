@@ -1,4 +1,6 @@
-﻿namespace Models.Dto
+﻿using Models.DTO;
+
+namespace Models.Dto
 {
     public class TaskDto
     {
@@ -10,5 +12,6 @@
         public string Head { get; set; }
         public string Body { get; set; }
         public string Comment { get; set; }
+        public StatusDto Status { get; set; }
     }
 }
