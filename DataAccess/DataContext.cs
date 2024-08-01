@@ -11,6 +11,7 @@ namespace DataAccess
         public DbSet<DeskEntity> DeskEntities { get; set; }
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<RoleEntity> RolesEntities { get; set; }
+        public DbSet<StatusEntity> StatusEntities { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -38,6 +39,8 @@ namespace DataAccess
                 .HasOne(x => x.Desk);
             modelBuilder.Entity<TaskEntity>()
                 .HasOne(x => x.Performer);
+            modelBuilder.Entity<TaskEntity>()
+                .HasOne(x => x.Status);
 
             modelBuilder.Entity<DeskEntity>().ToTable("Desks");
             modelBuilder.Entity<DeskEntity>()
@@ -66,6 +69,10 @@ namespace DataAccess
                 .HasKey(e => e.Id);
             modelBuilder.Entity<RoleEntity>()
                 .HasMany(x => x.Users);
+
+            modelBuilder.Entity<StatusEntity>().ToTable("Status");
+            modelBuilder.Entity<StatusEntity>()
+                .HasKey(e => e.Id);
 
             // Найдём все типы, которые реализуют интерфейс IIsActive
             var isActiveInterface = typeof(IIsActive);
