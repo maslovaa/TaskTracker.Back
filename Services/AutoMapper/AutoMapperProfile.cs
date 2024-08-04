@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 using Models.Dto;
+using Models.DTO;
 
 namespace Services.AutoMapper
 {
@@ -26,6 +27,10 @@ namespace Services.AutoMapper
                 opt => opt.MapFrom(src => true));
             CreateMap<RoleEntity, RoleDto>();
             CreateMap<RoleDto, RoleEntity>()
+                .ForMember(dest => dest.IsActive,
+                opt => opt.MapFrom(src => true));
+            CreateMap<StatusEntity, StatusDto>();
+            CreateMap<StatusDto, StatusEntity>()
                 .ForMember(dest => dest.IsActive,
                 opt => opt.MapFrom(src => true));
         }
