@@ -17,6 +17,13 @@ namespace WebApi.Controllers
             return _mapper.Map<List<TaskDto>>(await _tasksRepository.GetByPredicateAsync(x => true, CancellationToken.None));
         }
 
+        // GET: api/Tasks
+        [HttpGet("{deskId}/{statusId}")]
+        public async Task<ActionResult<IEnumerable<TaskDto>>> GetAsync(Guid deskId, Guid statusId)
+        {
+            return _mapper.Map<List<TaskDto>>(await _tasksRepository.GetByPredicateAsync(x => x.DeskId == deskId && x.StatusId == statusId, CancellationToken.None));
+        }
+
         // GET api/Tasks/<Guid>
         [HttpGet("{id}")]
         public async Task<ActionResult<TaskDto>> GetAsync(Guid id)
