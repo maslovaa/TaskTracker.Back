@@ -5,6 +5,7 @@ namespace Domain.Entities
 {
     public class DeskEntity : NamedEntity, IIsActive
     {
+        public Guid ProjectId { get; set; }
         public ProjectEntity Project { get; set; }
 
         public string Description { get; set; }

@@ -12,6 +12,7 @@ namespace Models.Dto
         public string Head { get; set; }
         public string Body { get; set; }
         public string Comment { get; set; }
-        public StatusDto Status { get; set; }
+        public Guid StatusId { get; set; }
+        public Guid DeskId { get; set; }
     }
 }

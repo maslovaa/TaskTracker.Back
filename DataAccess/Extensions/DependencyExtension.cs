@@ -17,6 +17,8 @@ namespace DataAccess.Extensions
             services.AddTransient<IUserRepository, UserRepository>();
 
             services.AddTransient<IRolesRepository, RolesRepository>();
+
+            services.AddTransient<IStatusesRepository, StatusesRepository>();
         }
     }
 }

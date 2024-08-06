@@ -16,5 +16,7 @@
         /// Задачи доски
         /// </summary>
         public IEnumerable<TaskDto> Tasks { get; set; }
+
+        public Guid ProjectId { get; set; }
     }
 }
