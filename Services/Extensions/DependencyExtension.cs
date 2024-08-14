@@ -8,6 +8,8 @@ public static class DependencyExtension
 {
     public static void AddServices(this IServiceCollection services)
     {
+        services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<INotificationAdapter, NotificationAdapter>();
         services.AddTransient<IUserEntityService, UserEntityService>();
     }
 }
