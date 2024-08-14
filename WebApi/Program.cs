@@ -1,16 +1,29 @@
 ﻿using DataAccess;
 using DataAccess.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Hosting;
 using Services.AutoMapper;
 using Services.Extensions;
+using MassTransit;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        var rabbitMqConfig = builder.Configuration.GetSection("RabbitMQ");
+        cfg.Host(rabbitMqConfig["Host"], h =>
+        {
+            h.Username(rabbitMqConfig["Username"]);
+            h.Password(rabbitMqConfig["Password"]);
+        });
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

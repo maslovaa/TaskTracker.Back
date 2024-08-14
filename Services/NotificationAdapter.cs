@@ -17,11 +17,11 @@ namespace Services
             _notificationService = notificationService;
         }
 
-        public void ProcessSend<T>(T model)
+        public async Task ProcessSendAsync<T>(T model)
         {
             var json = JsonSerializer.Serialize(model);
 
-            _notificationService.Send(json);
+            await _notificationService.SendAsync(json);
         }
     }
 }

@@ -8,6 +8,6 @@ namespace Services.Abstractions
 {
     public interface INotificationAdapter
     {
-        void ProcessSend<T>(T model);
+        Task ProcessSendAsync<T>(T model);
     }
 }

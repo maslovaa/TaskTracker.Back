@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Abstractions
+namespace Models.DTO
 {
-    public interface INotificationService
+    public class MessageDto
     {
-        Task SendAsync(string message);
+        public string Content { get; set; }
     }
 }
