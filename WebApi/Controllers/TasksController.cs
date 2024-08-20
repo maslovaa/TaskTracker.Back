@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Abstractions;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto;
 
@@ -11,6 +12,7 @@ namespace WebApi.Controllers
     public class TasksController(ITasksRepository _tasksRepository, IMapper _mapper) : ControllerBase
     {
         // GET: api/Tasks
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskDto>>> GetAsync()
         {
@@ -18,6 +20,7 @@ namespace WebApi.Controllers
         }
 
         // GET: api/Tasks
+        [Authorize]
         [HttpGet("{deskId}/{statusId}")]
         public async Task<ActionResult<IEnumerable<TaskDto>>> GetAsync(Guid deskId, Guid statusId)
         {
@@ -25,6 +28,7 @@ namespace WebApi.Controllers
         }
 
         // GET api/Tasks/<Guid>
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<TaskDto>> GetAsync(Guid id)
         {
@@ -32,6 +36,7 @@ namespace WebApi.Controllers
         }
 
         // POST api/Tasks
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Guid>> Post([FromBody] TaskDto taskDto)
         {
@@ -39,6 +44,7 @@ namespace WebApi.Controllers
         }
 
         // PUT api/Tasks
+        [Authorize]
         [HttpPut]
         public async Task<ActionResult<bool>> Put([FromBody] TaskDto taskDto)
         {
@@ -46,6 +52,7 @@ namespace WebApi.Controllers
         }
 
         // DELETE api/Tasks/<Giud>
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(Guid id)
         {
