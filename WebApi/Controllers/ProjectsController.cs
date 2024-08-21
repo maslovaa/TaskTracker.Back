@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Abstractions;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto;
 
@@ -11,6 +12,7 @@ namespace WebApi.Controllers
     public class ProjectsController(IProjectsRepository _projectsRepository, IMapper _mapper) : ControllerBase
     {
         // GET: api/Projects
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAllWithRelated()
         {
@@ -18,6 +20,7 @@ namespace WebApi.Controllers
         }
 
         // GET api/Projects/<Guid>
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProjectDto>> GetAsync(Guid id)
         {
@@ -25,6 +28,7 @@ namespace WebApi.Controllers
         }
 
         // POST api/Projects
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Guid>> Post([FromBody] ProjectDto projectDto)
         {
@@ -32,6 +36,7 @@ namespace WebApi.Controllers
         }
 
         // PUT api/Projects
+        [Authorize]
         [HttpPut]
         public async Task<ActionResult<bool>> Put([FromBody] ProjectDto projectDto)
         {
@@ -39,6 +44,7 @@ namespace WebApi.Controllers
         }
 
         // DELETE api/Projects/<Giud>
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(Guid id)
         {
