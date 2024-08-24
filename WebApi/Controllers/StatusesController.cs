@@ -14,14 +14,14 @@ namespace WebApi.Controllers
     public class StatusesController(IStatusesRepository _statusesRepository, IMapper _mapper) : ControllerBase
     {
         // GET api/Statuses/<Guid>
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<StatusDto>> GetAsync(Guid id)
         {
             return _mapper.Map<StatusDto>(await _statusesRepository.GetByIdAsync(id, CancellationToken.None));
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<List<StatusDto>>> GetAsync()
         {

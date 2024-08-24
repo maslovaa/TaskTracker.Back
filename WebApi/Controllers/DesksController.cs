@@ -13,7 +13,7 @@ namespace WebApi.Controllers
     public class DesksController(IDesksRepository _desksRepository, IMapper _mapper, INotificationAdapter _notificationAdapter) : ControllerBase
     {
         // GET: api/Desks
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DeskDto>>> GetAsync()
         {
@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         }
 
         // GET api/Desks/<Guid>
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<DeskDto>> GetAsync(Guid id)
         {
@@ -30,7 +30,7 @@ namespace WebApi.Controllers
         }
 
         // POST api/Desks
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public async Task<ActionResult<Guid>> Post([FromBody] DeskDto deskDto)
         {
@@ -38,7 +38,7 @@ namespace WebApi.Controllers
         }
 
         // PUT api/Desks
-        [Authorize]
+        //[Authorize]
         [HttpPut]
         public async Task<ActionResult<bool>> Put([FromBody] DeskDto deskDto)
         {
@@ -46,7 +46,7 @@ namespace WebApi.Controllers
         }
 
         // DELETE api/Desks/<Giud>
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(Guid id)
         {
