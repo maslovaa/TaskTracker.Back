@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Models.DTO.IdentityDtos;
 using Services.Abstractions;
 
@@ -39,6 +40,13 @@ namespace WebApi.Controllers
             }
 
             return Ok(loginResponse);
+        }
+
+        [Authorize]
+        [HttpGet("isAuth")]
+        public IActionResult IsAuth()
+        {
+            return Ok(true); 
         }
     }
 }

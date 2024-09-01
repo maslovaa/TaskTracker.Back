@@ -9,21 +9,21 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 public class UsersController(IUserEntityService _userService) : ControllerBase
 {
-    //[Authorize]
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(Guid id)
     {
         return Ok(await _userService.GetByIdAsync(id, CancellationToken.None));
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreatingUserDto creatingUserDto)
     {
         return Ok(await _userService.CreateAsync(creatingUserDto));
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> EditAsync(Guid id, UserDto updatingUserDto)
     {
@@ -31,7 +31,7 @@ public class UsersController(IUserEntityService _userService) : ControllerBase
         return Ok();
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpDelete]
     public async Task<IActionResult> Delete(Guid guid)
     {

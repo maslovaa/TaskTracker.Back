@@ -12,7 +12,7 @@ namespace WebApi.Controllers
     public class ProjectsController(IProjectsRepository _projectsRepository, IMapper _mapper) : ControllerBase
     {
         // GET: api/Projects
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAllWithRelated()
         {
@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         }
 
         // GET api/Projects/<Guid>
-        //[Authorize]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProjectDto>> GetAsync(Guid id)
         {
@@ -28,7 +28,7 @@ namespace WebApi.Controllers
         }
 
         // POST api/Projects
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Guid>> Post([FromBody] ProjectDto projectDto)
         {
@@ -36,7 +36,7 @@ namespace WebApi.Controllers
         }
 
         // PUT api/Projects
-        //[Authorize]
+        [Authorize]
         [HttpPut]
         public async Task<ActionResult<bool>> Put([FromBody] ProjectDto projectDto)
         {
@@ -44,7 +44,7 @@ namespace WebApi.Controllers
         }
 
         // DELETE api/Projects/<Giud>
-        //[Authorize]
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(Guid id)
         {
