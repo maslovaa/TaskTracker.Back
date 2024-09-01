@@ -13,7 +13,7 @@ namespace WebApi.Controllers
     public class RolesController(IRolesRepository _rolesRepository, IMapper _mapper) : ControllerBase
     {
         // GET: api/Roles
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RoleDto>>> GetAsync()
         {
@@ -21,7 +21,7 @@ namespace WebApi.Controllers
         }
 
         // GET api/Roles/<Guid>
-        //[Authorize]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<RoleDto>> GetAsync(Guid id)
         {
@@ -29,7 +29,7 @@ namespace WebApi.Controllers
         }
 
         // POST api/Roles
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Guid>> Post([FromBody] RoleDto roleDto)
         {
@@ -37,7 +37,7 @@ namespace WebApi.Controllers
         }
 
         // PUT api/Roles
-        //[Authorize]
+        [Authorize]
         [HttpPut]
         public async Task<ActionResult<bool>> Put([FromBody] RoleDto roleDto)
         {
@@ -45,7 +45,7 @@ namespace WebApi.Controllers
         }
 
         // DELETE api/Roles/<Giud>
-        //[Authorize]
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(Guid id)
         {
