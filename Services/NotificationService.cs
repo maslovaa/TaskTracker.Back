@@ -1,22 +1,35 @@
-﻿using MassTransit;
+﻿using Microsoft.Extensions.Configuration;
 using Models;
 using Models.DTO;
+using RabbitMQ.Client;
 using Services.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace Services
 {
-    public class NotificationService : INotificationService
+    public class NotificationService : INotificationService, IDisposable
     {
-        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IConnection _connection;
 
-        public NotificationService(IPublishEndpoint publishEndpoint)
+        public NotificationService(IConfiguration configuration)
         {
-            _publishEndpoint = publishEndpoint;
+            var rabbitMqConfig = configuration.GetSection("RabbitMQ");
+
+            var factory = new ConnectionFactory()
+            {
+                HostName = rabbitMqConfig["HostName"],
+                Port = int.Parse(rabbitMqConfig["Port"]),
+                UserName = rabbitMqConfig["UserName"],
+                Password = rabbitMqConfig["Password"],
+                VirtualHost = rabbitMqConfig["VirtualHost"]
+            };
+
+            _connection = factory.CreateConnection();
         }
 
         public async Task SendAsync(string message)
@@ -26,7 +39,21 @@ namespace Services
                 Content = message
             };
 
-            await _publishEndpoint.Publish(messageDto);
+            using (var channel = _connection.CreateModel())
+            {
+                channel.QueueDeclare(queue: "MessageQueue",
+                               durable: false,
+                               exclusive: false,
+                               autoDelete: false,
+                               arguments: null);
+
+                var body = Encoding.UTF8.GetBytes(message);
+
+                channel.BasicPublish(exchange: "",
+                               routingKey: "MessageQueue",
+                               basicProperties: null,
+                               body: body);
+            }
 
             // здесь будет брокер.
             Console.BackgroundColor = ConsoleColor.Blue;
@@ -34,6 +61,11 @@ namespace Services
             Console.WriteLine(message);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public void Dispose()
+        {
+            _connection?.Close();
         }
     }
 }
