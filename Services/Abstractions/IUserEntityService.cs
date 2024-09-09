@@ -14,12 +14,7 @@ public interface IUserEntityService
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>ДТО Пользователя.</returns>
     Task<UserDto> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-    /// <summary>
-    /// Асинхронное создание пользователя.
-    /// </summary>
-    /// <param name="creatingUserDto">ДТО создаваемого пользователя.</param>
-    /// <returns>Идентификатор созданного пользователя.</returns>
-    Task<Guid> CreateAsync(CreatingUserDto creatingUserDto);
+
     /// <summary>
     /// Асинхронное обновление пользователя.
     /// </summary>
