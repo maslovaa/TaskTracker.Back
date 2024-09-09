@@ -66,6 +66,8 @@ namespace Services
 
                 idnetityResponse.Token = responseObject.Token;
 
+                idnetityResponse.UserId = responseObject.UserId;
+
                 return idnetityResponse;
             }
 
@@ -106,6 +108,8 @@ namespace Services
                 await _userRepository.AddAsync(_mapper.Map<UserEntity>(registration));
 
                 indetityResponse.Token = objectResponse.Token;
+
+                indetityResponse.UserId = objectResponse.UserId;
 
                 return indetityResponse;
             }

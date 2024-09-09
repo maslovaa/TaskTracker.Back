@@ -17,13 +17,6 @@ public class UsersController(IUserEntityService _userService) : ControllerBase
     }
 
     [Authorize]
-    [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreatingUserDto creatingUserDto)
-    {
-        return Ok(await _userService.CreateAsync(creatingUserDto));
-    }
-
-    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> EditAsync(Guid id, UserDto updatingUserDto)
     {
