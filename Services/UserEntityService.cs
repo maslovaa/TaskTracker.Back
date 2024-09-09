@@ -27,13 +27,6 @@ public class UserEntityService : IUserEntityService
     }
 
     ///<inheritdoc/>
-    public async Task<Guid> CreateAsync(CreatingUserDto creatingUserDto)
-    {
-        var user = _mapper.Map<CreatingUserDto, UserEntity>(creatingUserDto);
-        return await _userRepository.AddAsync(user);
-    }
-
-    ///<inheritdoc/>
     public async Task UpdateAsync(Guid id, UserDto updatingUserDto, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(id, cancellationToken);

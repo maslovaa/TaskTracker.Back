@@ -6,6 +6,9 @@ namespace Models.DTO.IdentityDtos.IdentityResponse
 {
     public class IdentityResponse
     {
+        [JsonPropertyName("userId")]
+        public Guid UserId { get; set; }
+
         [JsonPropertyName("token")]
         public string Token { get; set; }
 
