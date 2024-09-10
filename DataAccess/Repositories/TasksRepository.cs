@@ -9,7 +9,7 @@ namespace DataAccess.Repositories
     {
         public TasksRepository(DataContext context) : base(context){ }
 
-        public virtual async Task<IEnumerable<TaskEntity>> GetByPredicateAsync(Expression<Func<TaskEntity, bool>> predicate, CancellationToken cancellationToken)
+        public override async Task<IEnumerable<TaskEntity>> GetByPredicateAsync(Expression<Func<TaskEntity, bool>> predicate, CancellationToken cancellationToken)
         {
             return await _context.Set<TaskEntity>().Where(predicate).Include(x => x.Performer).ToListAsync();
         }
