@@ -11,7 +11,7 @@ namespace DataAccess.Repositories
 
         public override async Task<IEnumerable<TaskEntity>> GetByPredicateAsync(Expression<Func<TaskEntity, bool>> predicate, CancellationToken cancellationToken)
         {
-            return await _context.Set<TaskEntity>().Where(predicate).Include(x => x.Performer).ToListAsync();
+            return await _context.Set<TaskEntity>().Where(predicate).Include(x => x.Performer).ToListAsync(cancellationToken);
         }
     }
 }
