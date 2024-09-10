@@ -13,5 +13,13 @@ namespace DataAccess.Repositories
         {
             return await _context.Set<TaskEntity>().Where(predicate).Include(x => x.Performer).ToListAsync(cancellationToken);
         }
+
+        public override async Task<TaskEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.TaskEntities
+                .Where(x => x.Id == id && x.IsActive)
+                .Include(x => x.Performer)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
     }
 }
