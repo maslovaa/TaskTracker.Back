@@ -6,7 +6,6 @@ using Models.Dto;
 using Models.DTO.IdentityDtos;
 using Models.DTO.IdentityDtos.IdentityResponse;
 using Services.Abstractions;
-using System;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -66,7 +65,7 @@ namespace Services
 
                 idnetityResponse.Token = responseObject.Token;
 
-                idnetityResponse.UserId = responseObject.UserId;
+                idnetityResponse.UserId = user.Id;
 
                 return idnetityResponse;
             }
@@ -105,11 +104,11 @@ namespace Services
                     return indetityResponse;
                 }
 
-                await _userRepository.AddAsync(_mapper.Map<UserEntity>(registration));
+                var userId = await _userRepository.AddAsync(_mapper.Map<UserEntity>(registration));
 
                 indetityResponse.Token = objectResponse.Token;
 
-                indetityResponse.UserId = objectResponse.UserId;
+                indetityResponse.UserId = userId;
 
                 return indetityResponse;
             }
