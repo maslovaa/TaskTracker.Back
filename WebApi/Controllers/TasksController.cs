@@ -4,12 +4,15 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto;
+using Models.DTO;
+using Services.Abstractions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TasksController(ITasksRepository _tasksRepository, IMapper _mapper) : ControllerBase
+    public class TasksController(ITasksRepository _tasksRepository, IMapper _mapper, INotificationAdapter _notificationAdapter, IUserEntityService _userService) : ControllerBase
     {
         // GET: api/Tasks
         [Authorize]
@@ -40,7 +43,19 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Guid>> Post([FromBody] TaskDto taskDto)
         {
-            return await _tasksRepository.AddAsync(_mapper.Map<TaskEntity>(taskDto));
+            var taskId = await _tasksRepository.AddAsync(_mapper.Map<TaskEntity>(taskDto));
+
+            UserDto user = await _userService.GetByIdAsync(taskDto.PerformerId, CancellationToken.None);
+
+            MessageDto message = new MessageDto
+            {
+                Email = user.Email,
+                Content = $"Задача {taskDto.Head} была создана."
+            };
+
+            await _notificationAdapter.ProcessSendAsync(message);
+
+            return taskId;
         }
 
         // PUT api/Tasks
@@ -48,7 +63,20 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task<ActionResult<bool>> Put([FromBody] TaskDto taskDto)
         {
-            return await _tasksRepository.UpdateAsync(_mapper.Map<TaskEntity>(taskDto), CancellationToken.None);
+            var isUpdate = await _tasksRepository.UpdateAsync(_mapper.Map<TaskEntity>(taskDto), CancellationToken.None);
+
+            UserDto user = await _userService.GetByIdAsync(taskDto.PerformerId, CancellationToken.None);
+
+            MessageDto message = new MessageDto
+            {
+                Email = user.Email,
+                Content = $"Задача {taskDto.Head} была изменена."
+            };
+
+            await _notificationAdapter.ProcessSendAsync(message);
+
+
+            return isUpdate;
         }
 
         // DELETE api/Tasks/<Giud>
@@ -56,7 +84,21 @@ namespace WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(Guid id)
         {
-            return await _tasksRepository.DeleteAsync(id, CancellationToken.None);
+            var isDelete = await _tasksRepository.DeleteAsync(id, CancellationToken.None);
+
+            TaskDto taskDto = _mapper.Map<TaskDto>(await _tasksRepository.GetByIdAsync(id, CancellationToken.None));
+
+            UserDto user = await _userService.GetByIdAsync(taskDto.PerformerId, CancellationToken.None);
+
+            MessageDto message = new MessageDto
+            {
+                Email = user.Email,
+                Content = $"Задача {taskDto.Head} была удалена."
+            };
+
+            await _notificationAdapter.ProcessSendAsync(message);
+
+            return isDelete;
         }
     }
 }

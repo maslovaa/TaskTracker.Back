@@ -10,14 +10,13 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DesksController(IDesksRepository _desksRepository, IMapper _mapper, INotificationAdapter _notificationAdapter) : ControllerBase
+    public class DesksController(IDesksRepository _desksRepository, IMapper _mapper) : ControllerBase
     {
         // GET: api/Desks
         [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DeskDto>>> GetAsync()
         {
-            await _notificationAdapter.ProcessSendAsync("Hello world");
             return _mapper.Map<List<DeskDto>>(await _desksRepository.GetByPredicateAsync(x => x.IsActive, CancellationToken.None));
         }
 
