@@ -14,6 +14,7 @@ namespace Models.Dto
         public string Comment { get; set; }
         public Guid StatusId { get; set; }
         public Guid DeskId { get; set; }
+        public Guid PerformerId { get; set; }
         public UserDto Performer { get; set; }
     }
 }
