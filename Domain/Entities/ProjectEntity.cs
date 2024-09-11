@@ -25,6 +25,8 @@ namespace Domain.Entities
         /// </summary>
         public string Status { get; set; } //TODO ENUM
 
+        public Guid OwnerId { get; set; }
+
         /// <summary>
         /// Владелец проекта
         /// </summary>
