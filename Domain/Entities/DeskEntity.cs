@@ -1,7 +1,15 @@
-﻿namespace Domain.Entities
+﻿using Domain.Abstractions;
+using System.ComponentModel;
+
+namespace Domain.Entities
 {
-    public class DeskEntity : NamedEntity
+    public class DeskEntity : NamedEntity, IIsActive
     {
+        public Guid ProjectId { get; set; }
         public ProjectEntity Project { get; set; }
+
+        public string Description { get; set; }
+        public IEnumerable<TaskEntity> Tasks { get; set; }
+        public bool IsActive { get; set; }
     }
 }

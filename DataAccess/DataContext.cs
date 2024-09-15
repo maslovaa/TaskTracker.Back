@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.Abstractions;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
@@ -9,6 +10,8 @@ namespace DataAccess
         public DbSet<TaskEntity> TaskEntities { get; set; }
         public DbSet<DeskEntity> DeskEntities { get; set; }
         public DbSet<UserEntity> Users { get; set; }
+        public DbSet<RoleEntity> RolesEntities { get; set; }
+        public DbSet<StatusEntity> StatusEntities { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -20,20 +23,69 @@ namespace DataAccess
             modelBuilder.Entity<ProjectEntity>().ToTable("Projects");
             modelBuilder.Entity<ProjectEntity>()
                 .HasKey(e => e.Id);
-            modelBuilder.Entity<ProjectEntity>().HasMany(x => x.Desks).WithOne(x => x.Project);
-            modelBuilder.Entity<ProjectEntity>().HasOne(x => x.Owner);
+            modelBuilder.Entity<ProjectEntity>()
+                .HasOne(x => x.Owner)
+                .WithMany(x => x.OwnersProjects);
+            modelBuilder.Entity<ProjectEntity>()
+                .HasMany(x => x.Desks);
+            modelBuilder.Entity<ProjectEntity>()
+                .HasMany(x => x.Users)
+                .WithMany(x => x.Projects);
 
             modelBuilder.Entity<TaskEntity>().ToTable("Tasks");
             modelBuilder.Entity<TaskEntity>()
                 .HasKey(e => e.Id);
+            modelBuilder.Entity<TaskEntity>()
+                .HasOne(x => x.Desk);
+            modelBuilder.Entity<TaskEntity>()
+                .HasOne(x => x.Performer);
+            modelBuilder.Entity<TaskEntity>()
+                .HasOne(x => x.Status);
 
             modelBuilder.Entity<DeskEntity>().ToTable("Desks");
             modelBuilder.Entity<DeskEntity>()
                 .HasKey(e => e.Id);
+            modelBuilder.Entity<DeskEntity>()
+                .HasMany(x => x.Tasks);
+            modelBuilder.Entity<DeskEntity>()
+                .HasOne(x => x.Project);
 
             modelBuilder.Entity<UserEntity>().ToTable("Users");
             modelBuilder.Entity<UserEntity>()
                 .HasKey(e => e.Id);
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(x => x.OwnersProjects)
+                .WithOne(x => x.Owner);
+            modelBuilder.Entity<UserEntity>()
+                .HasOne(x => x.Role);
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(x => x.Tasks);
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(x => x.Projects)
+                .WithMany(x => x.Users);
+
+            modelBuilder.Entity<RoleEntity>().ToTable("Roles");
+            modelBuilder.Entity<RoleEntity>()
+                .HasKey(e => e.Id);
+            modelBuilder.Entity<RoleEntity>()
+                .HasMany(x => x.Users);
+
+            modelBuilder.Entity<StatusEntity>().ToTable("Status");
+            modelBuilder.Entity<StatusEntity>()
+                .HasKey(e => e.Id);
+
+            // Найдём все типы, которые реализуют интерфейс IIsActive
+            var isActiveInterface = typeof(IIsActive);
+            var entityTypes = modelBuilder.Model.GetEntityTypes()
+                .Where(t => isActiveInterface.IsAssignableFrom(t.ClrType));
+
+            foreach (var entityType in entityTypes)
+            {
+                // Установим значение по умолчанию для свойства IsActive
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property(nameof(IIsActive.IsActive))
+                    .HasDefaultValue(true);
+            }
 
             base.OnModelCreating(modelBuilder);
         }

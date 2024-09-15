@@ -11,5 +11,12 @@
         /// Наименование доски
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Задачи доски
+        /// </summary>
+        public IEnumerable<TaskDto> Tasks { get; set; }
+
+        public Guid ProjectId { get; set; }
     }
 }

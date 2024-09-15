@@ -6,14 +6,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>true</InvariantGlobalization>
         <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+        <UserSecretsId>e729e01e-ed41-472b-a09e-b346b82972f9</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.5">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.1" />
     </ItemGroup>
 

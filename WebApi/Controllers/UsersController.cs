@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Dto;
 using Services.Abstractions;
@@ -8,29 +9,26 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 public class UsersController(IUserEntityService _userService) : ControllerBase
 {
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(Guid id)
     {
-        return Ok(await _userService.GetByIdAsync(id));
+        return Ok(await _userService.GetByIdAsync(id, CancellationToken.None));
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreatingUserDto creatingUserDto)
-    {
-        return Ok(await _userService.CreateAsync(creatingUserDto));
-    }
-
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> EditAsync(Guid id, UserDto updatingUserDto)
     {
-        await _userService.UpdateAsync(id, updatingUserDto);
+        await _userService.UpdateAsync(id, updatingUserDto, CancellationToken.None);
         return Ok();
     }
 
+    [Authorize]
     [HttpDelete]
     public async Task<IActionResult> Delete(Guid guid)
     {
-        await _userService.DeleteAsync(guid);
+        await _userService.DeleteAsync(guid, CancellationToken.None);
         return Ok();
     }
 }

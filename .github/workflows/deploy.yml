@@ -1,0 +1,97 @@
+name: CI CD pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Publish the project
+        run: dotnet publish ./WebApi/WebApi.csproj --configuration Release --output ./out
+
+      - name: Archive build output
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-output
+          path: ./out
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Download build output
+        uses: actions/download-artifact@v2
+        with:
+          name: build-output
+          path: ./out
+
+      - name: Test with the dotnet CLI
+        run: dotnet test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Download build output
+        uses: actions/download-artifact@v2
+        with:
+          name: build-output
+          path: ./out
+
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+            files: './out/appsettings.json'
+        env:
+            ConnectionStrings.DefaultConnection: ${{ secrets.CONNECTION_STRING }}
+
+      - name: Build Docker image
+        run: docker build -t almasvas/tasktracker.back:latest .
+
+      - name: Log in to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+
+      - name: Push Docker image to Docker Hub
+        run: docker push almasvas/tasktracker.back:latest
+
+      - name: SSH to Server and Deploy
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script_stop: false
+          script: |
+            docker pull almasvas/tasktracker.back:latest
+            docker stop tasktracker.back-container || true
+            docker rm tasktracker.back-container || true
+            docker run -d -p 8080:8080 --name tasktracker.back-container almasvas/tasktracker.back:latest

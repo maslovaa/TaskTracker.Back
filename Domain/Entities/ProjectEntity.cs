@@ -1,6 +1,9 @@
-﻿namespace Domain.Entities
+﻿using Domain.Abstractions;
+using System.ComponentModel;
+
+namespace Domain.Entities
 {
-    public class ProjectEntity : NamedEntity
+    public class ProjectEntity : NamedEntity, IIsActive
     {
         /// <summary>
         /// Описание проекта
@@ -22,14 +25,26 @@
         /// </summary>
         public string Status { get; set; } //TODO ENUM
 
+        public Guid OwnerId { get; set; }
+
         /// <summary>
         /// Владелец проекта
         /// </summary>
         public UserEntity Owner { get; set; }
 
         /// <summary>
+        /// Пользователи проекта
+        /// </summary>
+        public IEnumerable<UserEntity> Users { get; set; }
+
+        /// <summary>
         /// Доски проекта
         /// </summary>
-        public List<DeskEntity> Desks { get; set; }
+        public IEnumerable<DeskEntity> Desks { get; set; }
+
+        /// <summary>
+        /// Флаг активности
+        /// </summary>
+        public bool IsActive { get; set; }
     }
 }

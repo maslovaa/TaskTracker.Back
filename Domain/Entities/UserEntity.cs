@@ -1,30 +1,52 @@
 using Domain.Abstractions;
+using System.ComponentModel;
 
 namespace Domain.Entities;
 
 /// <summary>
 /// Модель пользователя.
 /// </summary>
-public class UserEntity : NamedEntity
+public class UserEntity : NamedEntity, IIsActive
 {
     /// <summary>
     /// Фамилия.
     /// </summary>
     public string Surname { get; set; }
+    
     /// <summary>
     /// Отчество.
     /// </summary>
     public string? Patronymic { get; set; }
+    
     /// <summary>
     /// Имя пользователя в системе.
     /// </summary>
     public string UserName { get; set; }
+    
     /// <summary>
-    ///  Электронная почта.
+    /// Электронная почта.
     /// </summary>
     public string Email { get; set; }
+
     /// <summary>
     /// Признак активности.
     /// </summary>
     public bool IsActive { get; set; }
+
+    /// <summary>
+    /// Владелец проектов.
+    /// </summary>
+    public IEnumerable<ProjectEntity> OwnersProjects { get; set; }
+    /// <summary>
+    /// Пользователь проектов.
+    /// </summary>
+    public IEnumerable<ProjectEntity> Projects { get; set; }
+    /// <summary>
+    /// Роль пользователя.
+    /// </summary>
+    public RoleEntity Role { get; set; }
+    /// <summary>
+    /// Задачи пользователя.
+    /// </summary>
+    public IEnumerable<TaskEntity> Tasks { get; set; }
 }

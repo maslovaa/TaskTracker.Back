@@ -1,8 +1,6 @@
 ﻿using DataAccess.Repositories;
 using Domain.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
-using Services;
-using Services.Abstractions;
 
 namespace DataAccess.Extensions
 {
@@ -18,7 +16,9 @@ namespace DataAccess.Extensions
 
             services.AddTransient<IUserRepository, UserRepository>();
 
-            services.AddTransient<IUserEntityService, UserEntityService>();
+            services.AddTransient<IRolesRepository, RolesRepository>();
+
+            services.AddTransient<IStatusesRepository, StatusesRepository>();
         }
     }
 }

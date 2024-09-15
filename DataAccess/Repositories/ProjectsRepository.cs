@@ -1,90 +1,24 @@
-﻿using AutoMapper;
-using Domain.Abstractions;
+﻿using Domain.Abstractions;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Models.Dto;
-using System.Linq.Expressions;
 
 namespace DataAccess.Repositories
 {
-    public class ProjectsRepository(DataContext _context, IMapper _mapper) : IProjectsRepository
+    public class ProjectsRepository(DataContext context) : Repository<ProjectEntity, Guid>(context), IProjectsRepository
     {
-        /// <inheritdoc/>
-        public async Task<Guid> AddProjectAsync(ProjectDto projectDto)
+        public IQueryable GetAllWithRelated()
         {
-            try
-            {
-                ProjectEntity projectEntity = _mapper.Map<ProjectEntity>(projectDto);
-                var res = await _context.ProjectEntities.AddAsync(projectEntity);
-                await _context.SaveChangesAsync();
-                return res.Entity.Id;
-            }
-            catch
-            {
-                return Guid.Empty;
-            }
+            return context.ProjectEntities
+                .Where(p => p.IsActive)
+                .Include(x=>x.Desks).ThenInclude(x=>x.Tasks)
+                .Include(x => x.Owner).ThenInclude(x => x.Role)
+                .Include(x => x.Users).ThenInclude(x => x.Role);
         }
 
-        /// <inheritdoc/>
-        public async Task<bool> DeleteProjectAsync(Guid projectId)
+        public async Task<ProjectEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            try
-            {
-                var project = await _context.ProjectEntities.FindAsync(projectId);
-                _context.ProjectEntities.Remove(project);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <inheritdoc/>
-        public async Task<ProjectDto> FindProjectByIdAsync(Guid projectId)
-        {
-            try
-            {
-                ProjectEntity projectEntity = await _context.ProjectEntities.FindAsync(projectId);
-                ProjectDto projectDto = _mapper.Map<ProjectDto>(projectEntity);
-                return projectDto;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <inheritdoc/>
-        public async Task<List<ProjectDto>> GetProjectsByPredicateAsync(Expression<Func<ProjectEntity, bool>> predicate)
-        {
-            try
-            {
-                List<ProjectEntity> projectEntity = await _context.ProjectEntities.Where(predicate).ToListAsync();
-                List<ProjectDto> projectDto = _mapper.Map<List<ProjectDto>>(projectEntity);
-                return projectDto;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <inheritdoc/>
-        public async Task<bool> UpdateProjectAsync(ProjectDto projectDto)
-        {
-            try
-            {
-                ProjectEntity projectEntity = _mapper.Map<ProjectEntity>(projectDto);
-                _context.ProjectEntities.Update(projectEntity);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            var entity = await _context.ProjectEntities.Include(x => x.Desks.Where(d => d.IsActive)).FirstOrDefaultAsync(x => x.Id == id && x.IsActive, cancellationToken);
+            return entity;
         }
     }
 }
